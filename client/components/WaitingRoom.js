@@ -1,11 +1,9 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 
-export default function LoginButton({ label }) {
+export default function WaitingRoom({ navigation }) {
   return (
     <View style={styles.buttonContainer}>
-      <Pressable style={styles.button} onPress={() => alert('You have logged in.')}>
-        <Text style={styles.buttonLabel}>{label}</Text>
-      </Pressable>
+        <Text style={styles.buttonLabel}>Waiting Room</Text>
     </View>
   );
 }
