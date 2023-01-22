@@ -1,13 +1,12 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { StyleSheet, Image, View, Pressable, Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import HomeImage from './HomeImage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Login({ navigation }) {
   return (
     <View style={styles.container}>
         <View style={styles.imageContainer}>
-            <HomeImage placeholderImageSource={PlaceholderImage} />
+            <Image source={PlaceholderImage} style={styles.image} />
         </View>
         <View style={styles.footerContainer}>
             <View style={styles.buttonContainer}>
@@ -26,6 +25,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: 'center',
+  },
+  image: {
+    width: 320,
+    height: 440,
+    borderRadius: 18,
   },
   imageContainer: {
     flex: 1,
