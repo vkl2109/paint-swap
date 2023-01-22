@@ -1,6 +1,7 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Login from './components/Login';
 import LandingPage from './components/LandingPage';
@@ -15,17 +16,19 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='LandingPage' component={LandingPage} />
-        <Stack.Screen name='ChoosePublic' component={ChoosePublic} />
-        <Stack.Screen name='CreateRoom' component={CreateRoom} />
-        <Stack.Screen name='EnterPrivate' component={EnterPrivate} />
-        <Stack.Screen name='SignUp' component={SignUp} />
-        <Stack.Screen name='PaintRoom' component={PaintRoom} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='LandingPage' component={LandingPage} />
+          <Stack.Screen name='ChoosePublic' component={ChoosePublic} />
+          <Stack.Screen name='CreateRoom' component={CreateRoom} />
+          <Stack.Screen name='EnterPrivate' component={EnterPrivate} />
+          <Stack.Screen name='SignUp' component={SignUp} />
+          <Stack.Screen name='PaintRoom' component={PaintRoom} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
 
   );
 }
