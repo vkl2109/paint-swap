@@ -1,27 +1,64 @@
-import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
-import { useState } from 'react'
+import { StyleSheet, View, Pressable, Text, TextInput, CheckBox } from 'react-native';
+import { useState, useEffect } from 'react'
 
 export default function CreateRoom({ navigation }) {
 
     const [text, onChangeText] = useState('')
+    const [showMessage, setShowMessage] = useState(false)
+    const [privateRoom, setPrivateRoom] = useState(false);
+
+
+    // useEffect(()=>{
+    //     socket.on('navigate_to_room', (roomName) => {
+    //         navigation.navigate('Room', { roomName });
+    //     });
+    // })
+
+
 
     const handleSubmit = async () => {
-        let req = await fetch('http://localhost:3000/rooms')
+        let req = await fetch('http://localhost:3000/rooms', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: text,
+                private: privateRoom,
+                occupied: false
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
         let res = await req.json()
+        console.log(res)
+        setShowMessage(true)
     }
 
     return (
-        <View style={styles.buttonContainer}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="Room Name"
-                maxLength={20}
-                onChangeText={text => onChangeText(text)}
-                value={text}
-            />
-            <Pressable style={styles.button} onPress={() => handleSubmit()}>
-                <Text style={styles.buttonLabel}>Create a Room</Text>
-            </Pressable>
+        <View>
+            {showMessage ? (
+                <View>
+                    <Text> Waiting for a user to join {text}...</Text>
+                </View>
+            ) : (
+                <View style={styles.buttonContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Room Name"
+                        maxLength={20}
+                        onChangeText={text => onChangeText(text)}
+                        value={text}
+                    />
+                    <View style={styles.checkboxContainer}>
+                        <CheckBox
+                            value={privateRoom}
+                            onValueChange={setPrivateRoom}
+                            style={styles.checkbox}
+                        />
+                        <Text style={styles.label}>This is a private room</Text>
+                    </View>
+                    <Pressable style={styles.button} onPress={() => handleSubmit()}>
+                        <Text style={styles.buttonLabel}>Create a Room</Text>
+                    </Pressable>
+                </View>
+            )}
         </View>
     );
 }
@@ -58,5 +95,15 @@ const styles = StyleSheet.create({
         fontSize: 25,
         paddingLeft: 20,
         paddingRight: 20
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        marginBottom: 20,
+    },
+    checkbox: {
+        alignSelf: 'center',
+    },
+    label: {
+        margin: 8,
     }
 });

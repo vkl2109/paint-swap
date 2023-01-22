@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
           let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
           setLoginData(newUser)
           localStorage.setItem('token', res.token)
-          // navigation.navigate('WaitingRoom')
+          // navigation.navigate('LandingPage')
         }
         else {
           setErrorMsg(res.error)
@@ -60,7 +60,7 @@ export default function Login({ navigation }) {
         // navigation.navigate('WaitingRoom')
       }
     }
-    navigation.navigate('WaitingRoom')
+    navigation.navigate('LandingPage')
   }
 
   return (

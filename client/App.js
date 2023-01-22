@@ -8,7 +8,6 @@ import LandingPage from './components/LandingPage';
 import ChoosePublic from './components/ChoosePublic';
 import CreateRoom from './components/CreateRoom';
 import EnterPrivate from './components/EnterPrivate';
-import SignUp from './components/SignUp';
 import PaintRoom from './components/PaintRoom';
 
 
@@ -24,7 +23,6 @@ export default function App() {
           <Stack.Screen name='ChoosePublic' component={ChoosePublic} />
           <Stack.Screen name='CreateRoom' component={CreateRoom} />
           <Stack.Screen name='EnterPrivate' component={EnterPrivate} />
-          <Stack.Screen name='SignUp' component={SignUp} />
           <Stack.Screen name='PaintRoom' component={PaintRoom} />
         </Stack.Navigator>
       </NavigationContainer>

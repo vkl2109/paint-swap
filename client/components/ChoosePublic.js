@@ -1,30 +1,39 @@
-import { StyleSheet, View, Pressable, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
-export default function CreateRoom({ navigation }) {
+export default function ChoosePublic({ navigation }) {
 
-    //     const [ rooms, setRooms ] = useState([])
+    const [rooms, setRooms] = useState([])
 
 
-    // useEffect(()=>{
-    //     const request =async ()=>{
-    //         let req = await fetch('http://localhost:3000')
-    //         let res = await req.json()
-    //      
-    //         setRooms(res)
-    //          console.log(rooms)
-    //     }
-    // })
+    useEffect(() => {
+        const request = async () => {
+            let req = await fetch('http://localhost:3000/rooms')
+            let res = await req.json()
+
+            setRooms(res)
+            console.log(rooms)
+        }
+    })
+
+
+    const handleRoom = (room) => {
+        navigation.navigate('PaintRoom', room)
+
+        // socket.on('join_room', (data) => {
+        //     if (data.status === 'success') {
+        //         navigation.navigate('Room', { roomName });
+    }
 
 
     return (
         <View style={styles.buttonContainer}>
-            {/* <Text style={styles.buttonLabel}>Enter a Public Room</Text>
-            <FlatList data={rooms} renderItem={({item})=>(
-                <TouchableOpacity>
-                    <Text>Room: {item.name}</Text>
+            <Text style={styles.buttonLabel}>Enter a Public Room</Text>
+            <FlatList data={rooms} renderItem={({ room }) => (
+                <TouchableOpacity onPress={() => { handleRoom(room) }}>
+                    <Text>Room: {room.name}</Text>
                 </TouchableOpacity>
-            )}/> */}
+            )} />
 
         </View>
     );
