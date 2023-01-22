@@ -5,6 +5,10 @@ export default function CreateRoom({ navigation }) {
 
     const [text, onChangeText] = useState('')
 
+    const handleSubmit = async () => {
+        let req = await fetch('http://localhost:3000/rooms')
+        let res = await req.json()
+    }
 
     return (
         <View style={styles.buttonContainer}>
@@ -15,7 +19,7 @@ export default function CreateRoom({ navigation }) {
                 onChangeText={text => onChangeText(text)}
                 value={text}
             />
-            <Pressable style={styles.button} onPress={() => navigation.navigate('LandingPage')}>
+            <Pressable style={styles.button} onPress={() => handleSubmit()}>
                 <Text style={styles.buttonLabel}>Create a Room</Text>
             </Pressable>
         </View>
