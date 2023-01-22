@@ -1,14 +1,37 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, SafeAreaView, View, Pressable, Text, ScrollView } from 'react-native';
 
 export default function WaitingRoom({ navigation }) {
+  const [ users, setUsers ] = useState()
+
+  useEffect(()=>{
+    const request = async () => {
+      let req = await fetch('http://localhost:3001/users')
+      let res = await req.json()
+      if (req.ok) {
+        setUsers(res)
+      }
+    }
+    // request()
+  },[])
+
   return (
-    <View style={styles.buttonContainer}>
-        <Text style={styles.buttonLabel}>Waiting Room</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.buttonContainer}>
+            <Text style={styles.buttonLabel}>Waiting Room</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#5A5A5A', // '#25292e'
+    alignItems: 'center',
+  },
   buttonContainer: {
     width: 320,
     height: 68,
@@ -16,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 3,
+    // backgroundColor: '#FFFFFF'
   },
   button: {
     borderRadius: 10,
