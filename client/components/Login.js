@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Image, SafeAreaView, View, Pressable, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Button } from '@rneui/themed';
+import { Button, Dialog } from '@rneui/themed';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Login({ navigation }) {
@@ -9,6 +9,7 @@ export default function Login({ navigation }) {
   const [password, onChangePassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+  const [errorDialog, setErrorDialog] = useState(false)
   const [loginState, setLoginState] = useState(true)
 
   const handleSubmit = () => {
@@ -57,11 +58,22 @@ export default function Login({ navigation }) {
       else {
         setErrorMsg('')
         // signup()
-        // navigation.navigate('WaitingRoom')
+        // navigation.navigate('LandingPage')
       }
     }
     navigation.navigate('LandingPage')
   }
+
+  const toggleErrorDialog = () =>{
+    setErrorDialog(false)
+    setErrorMsg('')
+  }
+
+  useEffect(()=>{
+    if (errorMsg != '') {
+      setErrorDialog(true)
+    }
+  },[errorMsg])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,22 +81,13 @@ export default function Login({ navigation }) {
         <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
         <TextInput style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
         {!loginState && <TextInput style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
-        {(errorMsg != '') && <Button
-          title={errorMsg}
-          buttonStyle={{
-            backgroundColor: 'rgba(100, 100, 100, 0)',
-            color: '#FF0000',
-            borderWidth: 0,
-            borderRadius: 30,
-          }}
-          containerStyle={{
-            width: 200,
-            height: 40,
-            marginHorizontal: 50,
-          }}
-          titleStyle={{ color: 'red', fontWeight: 'bold' }}
-          onPress={() => setLoginState(loginState => !loginState)}
-        />}
+        <Dialog
+          isVisible={errorDialog}
+          onBackdropPress={toggleErrorDialog}
+        >
+          <Dialog.Title style={styles.dialogTitle}title={loginState ? "Log In Error" : "Sign Up Error"}/>
+          <Text style={styles.dialogText}>{errorMsg}</Text>
+        </Dialog>
         <Button
           title={loginState ? "LOG IN" : "SIGN UP"}
           buttonStyle={{
@@ -140,6 +143,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1 / 2,
+  },
+  dialogTitle: {
+    textAlign: 'center'
+  },
+  dialogText: {
+    textAlign: 'center',
+    color: '#FF0000'
   },
   headerContainer: {
     marginTop: 40,
