@@ -3,8 +3,10 @@ from flask import Flask, send_file, request, jsonify
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
-from models import db, User, Booking, Classroom, Event, Seat
+from models import db, User, Room, Canvas
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_socketio import SocketIO, send, emit
+
 
 app = Flask(__name__, static_folder='public')
 CORS(app, origins=['*'])
@@ -12,6 +14,7 @@ app.config.from_object(Config)
 jwt = JWTManager(app)
 db.init_app(app)
 migrate = Migrate(app, db)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 @app.get('/')
@@ -59,5 +62,46 @@ def create_user():
     return jsonify(user.toJSON()), 201
 
 
+@app.get('/rooms/<name>')
+def handle_get_room(name):
+    # retrieve the room details from the database
+    room = Room.query.filter_by(name=name).first()
+    if room:
+        return jsonify(room)
+    else:
+        return jsonify({"error": "Room not found"}), 404
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=os.environ.get('PORT', 3001))
+
+
+@app.post('/rooms')
+def create_room():
+    data = request.json
+    room = Room(data['name'], data['private'], data['occupied'])
+    db.session.add(room)
+    db.session.commit()
+    return jsonify(room.toJSON()), 201
+
+
+@socketio.on('connect')
+def connected():
+    '''This function is an event listener that gets called when the client connects to the server'''
+    print(f'Client {request.sid} has connected')
+    emit('connect', {'data': f'id: {request.sid} is connected'})
+
+
+@socketio.on('data')
+def handle_message(data):
+    '''This function runs whenever a client sends a socket message to be broadcast'''
+    print(f'Message from Client {request.sid} : ', data)
+    emit('data', {'data': 'data', 'id': request.sid}, broadcast=True)
+
+
+@socketio.on("disconnect")
+def disconnected():
+    '''This function is an event listener that gets called when the client disconnects from the server'''
+    print(f'Client {request.sid} has disconnected')
+    emit('disconnect',
+         f'Client {request.sid} has disconnected', broadcast=True)

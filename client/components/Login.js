@@ -5,54 +5,54 @@ import { Button } from '@rneui/themed';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Login({ navigation }) {
-  const [ username, onChangeUserName ] = useState('')
-  const [ password, onChangePassword ] = useState('')
-  const [ confirmPassword, onChangeConfirmPassword ] = useState('')
-  const [ errorMsg, setErrorMsg ] = useState('')
-  const [ loginState, setLoginState ] = useState(true)
+  const [username, onChangeUserName] = useState('')
+  const [password, onChangePassword] = useState('')
+  const [confirmPassword, onChangeConfirmPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+  const [loginState, setLoginState] = useState(true)
 
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
         let req = await fetch("http://localhost:3001/login", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-            })
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          })
         })
         let res = await req.json()
         if (req.ok) {
-            setErrorMsg('')
-            let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
-            setLoginData(newUser)
-            localStorage.setItem('token', res.token)
-            // navigation.navigate('WaitingRoom')
+          setErrorMsg('')
+          let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
+          setLoginData(newUser)
+          localStorage.setItem('token', res.token)
+          // navigation.navigate('LandingPage')
         }
         else {
-            setErrorMsg(res.error)
+          setErrorMsg(res.error)
         }
       }
-    // login()
+      // login()
     }
     else {
       const signup = async () => {
         let req = await fetch("http://localhost:3001/users", {
-            method: "POST",
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
+          method: "POST",
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
         })
         let res = await req.json()
         if (req.ok) {
-            setLoginData(res)
+          setLoginData(res)
         }
       }
       if (password !== confirmPassword) {
-          setErrorMsg("check passwords")
+        setErrorMsg("check passwords")
       }
       else {
         setErrorMsg('')
@@ -60,69 +60,69 @@ export default function Login({ navigation }) {
         // navigation.navigate('WaitingRoom')
       }
     }
-    navigation.navigate('WaitingRoom')
+    navigation.navigate('LandingPage')
   }
 
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-            <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
-            <TextInput style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
-            {!loginState && <TextInput style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
-            {(errorMsg != '') && <Button
-              title={errorMsg}
-              buttonStyle={{
-                backgroundColor: 'rgba(100, 100, 100, 0)',
-                color: '#FF0000',
-                borderWidth: 0,
-                borderRadius: 30,
-              }}
-              containerStyle={{
-                width: 200,
-                height: 40,
-                marginHorizontal: 50,
-              }}
-              titleStyle={{ color: 'red', fontWeight: 'bold' }}
-              onPress={() => setLoginState(loginState => !loginState)}
-            />}
-            <Button
-              title={loginState ? "LOG IN" : "SIGN UP"}
-              buttonStyle={{
-                backgroundColor: 'black',
-                borderWidth: 2,
-                borderColor: 'white',
-                borderRadius: 30,
-              }}
-              containerStyle={{
-                width: 200,
-                marginHorizontal: 50,
-                marginVertical: 10,
-              }}
-              titleStyle={{ fontWeight: 'bold' }}
-              onPress={() => handleSubmit()}
-            />
-            <Button
-              title={loginState ? "go to sign up" : "go to log in"}
-              buttonStyle={{
-                backgroundColor: 'rgba(100, 100, 100, 50)',
-                borderColor: 'transparent',
-                borderWidth: 0,
-                borderRadius: 30,
-              }}
-              containerStyle={{
-                width: 200,
-                height: 50,
-                marginHorizontal: 50,
-                marginVertical: 10,
-              }}
-              titleStyle={{ fontWeight: 'bold' }}
-              onPress={() => setLoginState(loginState => !loginState)}
-            />
-        </View>
-        <View style={styles.imageContainer}>
-            <Image source={PlaceholderImage} style={styles.image} />
-        </View>
-        <StatusBar style="auto" />
+      <View style={styles.headerContainer}>
+        <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
+        <TextInput style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
+        {!loginState && <TextInput style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
+        {(errorMsg != '') && <Button
+          title={errorMsg}
+          buttonStyle={{
+            backgroundColor: 'rgba(100, 100, 100, 0)',
+            color: '#FF0000',
+            borderWidth: 0,
+            borderRadius: 30,
+          }}
+          containerStyle={{
+            width: 200,
+            height: 40,
+            marginHorizontal: 50,
+          }}
+          titleStyle={{ color: 'red', fontWeight: 'bold' }}
+          onPress={() => setLoginState(loginState => !loginState)}
+        />}
+        <Button
+          title={loginState ? "LOG IN" : "SIGN UP"}
+          buttonStyle={{
+            backgroundColor: 'black',
+            borderWidth: 2,
+            borderColor: 'white',
+            borderRadius: 30,
+          }}
+          containerStyle={{
+            width: 200,
+            marginHorizontal: 50,
+            marginVertical: 10,
+          }}
+          titleStyle={{ fontWeight: 'bold' }}
+          onPress={() => handleSubmit()}
+        />
+        <Button
+          title={loginState ? "go to sign up" : "go to log in"}
+          buttonStyle={{
+            backgroundColor: 'rgba(100, 100, 100, 50)',
+            borderColor: 'transparent',
+            borderWidth: 0,
+            borderRadius: 30,
+          }}
+          containerStyle={{
+            width: 200,
+            height: 50,
+            marginHorizontal: 50,
+            marginVertical: 10,
+          }}
+          titleStyle={{ fontWeight: 'bold' }}
+          onPress={() => setLoginState(loginState => !loginState)}
+        />
+      </View>
+      <View style={styles.imageContainer}>
+        <Image source={PlaceholderImage} style={styles.image} />
+      </View>
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 20,
     shadowColor: '#52006A',
-    shadowOffset: {width: -2, height: 4},
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
   }
