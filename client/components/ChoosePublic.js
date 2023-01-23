@@ -34,7 +34,6 @@ export default function ChoosePublic({ navigation }) {
                     <Text>Room: {room.name}</Text>
                 </TouchableOpacity>
             )} />
-
         </View>
     );
 }

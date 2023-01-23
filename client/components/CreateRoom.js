@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable, Text, TextInput, CheckBox } from 'react-native';
+import { StyleSheet, View, Pressable, Text, TextInput, Switch } from 'react-native';
 import { useState, useEffect } from 'react'
 
 export default function CreateRoom({ navigation }) {
@@ -47,7 +47,7 @@ export default function CreateRoom({ navigation }) {
                         value={text}
                     />
                     <View style={styles.checkboxContainer}>
-                        <CheckBox
+                        <Switch
                             value={privateRoom}
                             onValueChange={setPrivateRoom}
                             style={styles.checkbox}

@@ -1,44 +1,74 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text } from 'react-native';
+import { Button } from '@rneui/themed';
 
 export default function LandingPage({ navigation }) {
   return (
-    <View style={styles.buttonContainer}>
-      <Text style={styles.buttonLabel}>Waiting Room</Text>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('LandingPage')}>
-        <Text style={styles.buttonLabel}>Create a Room</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('LandingPage')}>
-        <Text style={styles.buttonLabel}>Enter a Room</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('LandingPage')}>
-        <Text style={styles.buttonLabel}>Enter a Private Room</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('LandingPage')}>
-        <Text style={styles.buttonLabel}>Choose a Public Room</Text>
-      </Pressable>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.buttonList}>
+          <Text style={styles.buttonLabel}>Waiting Room</Text>
+          <Button
+              title="Create Room"
+              buttonStyle={{
+                backgroundColor: 'rgba(111, 202, 186, 1)',
+                borderRadius: 5,
+              }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              containerStyle={{
+                marginHorizontal: 50,
+                height: 50,
+                width: 200,
+                marginVertical: 10,
+              }}
+              onPress={() => navigation.navigate('CreateRoom')}
+            />
+          <Button
+              title="Enter A Room"
+              buttonStyle={{
+                backgroundColor: 'rgba(111, 202, 186, 1)',
+                borderRadius: 5,
+              }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              containerStyle={{
+                marginHorizontal: 50,
+                height: 50,
+                width: 200,
+                marginVertical: 10,
+              }}
+              onPress={() => navigation.navigate('EnterPrivate')}
+            />
+          <Button
+              title="Choose Public"
+              buttonStyle={{
+                backgroundColor: 'rgba(111, 202, 186, 1)',
+                borderRadius: 5,
+              }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              containerStyle={{
+                marginHorizontal: 50,
+                height: 50,
+                width: 200,
+                marginVertical: 10,
+              }}
+              onPress={() => navigation.navigate('ChoosePublic')}
+            />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    width: 320,
-    height: 68,
-    marginHorizontal: 20,
+  container: {
+    flex: 1,
+    backgroundColor: '#5A5A5A', // '#25292e'
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
+    justifyContent: 'center'
   },
-  button: {
-    borderRadius: 10,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
+  buttonList: {
+    flex: 1,
     justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonIcon: {
-    paddingRight: 8,
+    alignItems: 'center'
   },
   buttonLabel: {
     color: '#fff',
