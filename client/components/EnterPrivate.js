@@ -11,7 +11,7 @@ export default function EnterPrivate({ navigation }) {
         // let req = await fetch(`http://localhost:3000/rooms/${name}`)
         // let res = await req.json()
         // console.log(res)
-        navigation.navigate('PaintRoom', res)
+        navigation.navigate('PaintRoom', { roomID: 1 })
 
         // socket.on('join_room', (data) => {
         //     if (data.status === 'success') {

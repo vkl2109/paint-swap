@@ -1,13 +1,18 @@
-import { View } from 'react-native'
 
-export default function PaintRoom({ route }) {
+import { View, Text } from 'react-native'
 
-    const room = route.params.room;
+export default function PaintRoom({ navigation, route }) {
+
+    const { roomID } = route.params;
     // not sure if this is the right way to pass the room param 
 
 
     return (
-        <View></View>
+        <View>
+            <Text>
+                {roomID}
+            </Text>
+        </View>
     )
 
 }
