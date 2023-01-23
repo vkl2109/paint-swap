@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "client",
-    "slug": "client",
+    "slug": "paint-swap",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a1a02618-7d36-4a54-ad0c-02e77cbb1281"
+      }
+    },
+    "owner": "vkl2109"
   }
 }
