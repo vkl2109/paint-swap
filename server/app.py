@@ -72,8 +72,6 @@ def handle_get_room(name):
         return jsonify({"error": "Room not found"}), 404
 
 
-
-
 @app.post('/rooms')
 def create_room():
     data = request.json
@@ -103,6 +101,13 @@ def create_room():
 #     print(f'Client {request.sid} has disconnected')
 #     emit('disconnect',
 #          f'Client {request.sid} has disconnected', broadcast=True)
+
+
+# @socketio.on('join')
+# def handle_join(room_name):
+#     join_room(room_name)
+#     emit('join_success', {'message': f'Successfully joined room {room_name}'}, room=room_name)
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=os.environ.get('PORT', 3001))
