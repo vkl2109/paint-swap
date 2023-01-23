@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Image, SafeAreaView, View, Pressable, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Image, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Button, Dialog } from '@rneui/themed';
 const PlaceholderImage = require('../assets/images/background-image.png');
@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://localhost:3001/login", {
+        let req = await fetch("http://127.0.0.1:3001/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -27,9 +27,9 @@ export default function Login({ navigation }) {
         if (req.ok) {
           setErrorMsg('')
           let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
-          setLoginData(newUser)
-          localStorage.setItem('token', res.token)
-          // navigation.navigate('LandingPage')
+          // setLoginData(newUser)
+          // localStorage.setItem('token', res.token)
+          navigation.navigate('LandingPage')
         }
         else {
           setErrorMsg(res.error)
@@ -49,7 +49,7 @@ export default function Login({ navigation }) {
         })
         let res = await req.json()
         if (req.ok) {
-          setLoginData(res)
+          // setLoginData(res)
         }
       }
       if (password !== confirmPassword) {
@@ -77,55 +77,57 @@ export default function Login({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
-        <TextInput style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
-        {!loginState && <TextInput style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
-        <Dialog
-          isVisible={errorDialog}
-          onBackdropPress={toggleErrorDialog}
-        >
-          <Dialog.Title style={styles.dialogTitle}title={loginState ? "Log In Error" : "Sign Up Error"}/>
-          <Text style={styles.dialogText}>{errorMsg}</Text>
-        </Dialog>
-        <Button
-          title={loginState ? "LOG IN" : "SIGN UP"}
-          buttonStyle={{
-            backgroundColor: 'black',
-            borderWidth: 2,
-            borderColor: 'white',
-            borderRadius: 30,
-          }}
-          containerStyle={{
-            width: 200,
-            marginHorizontal: 50,
-            marginVertical: 10,
-          }}
-          titleStyle={{ fontWeight: 'bold' }}
-          onPress={() => handleSubmit()}
-        />
-        <Button
-          title={loginState ? "go to sign up" : "go to log in"}
-          buttonStyle={{
-            backgroundColor: 'rgba(100, 100, 100, 50)',
-            borderColor: 'transparent',
-            borderWidth: 0,
-            borderRadius: 30,
-          }}
-          containerStyle={{
-            width: 200,
-            height: 50,
-            marginHorizontal: 50,
-            marginVertical: 10,
-          }}
-          titleStyle={{ fontWeight: 'bold' }}
-          onPress={() => setLoginState(loginState => !loginState)}
-        />
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={PlaceholderImage} style={styles.image} />
-      </View>
-      <StatusBar style="auto" />
+      <ScrollView>
+        <View style={styles.headerContainer}>
+          <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
+          <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
+          {!loginState && <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
+          <Dialog
+            isVisible={errorDialog}
+            onBackdropPress={toggleErrorDialog}
+          >
+            <Dialog.Title style={styles.dialogTitle}title={loginState ? "Log In Error" : "Sign Up Error"}/>
+            <Text style={styles.dialogText}>{errorMsg}</Text>
+          </Dialog>
+          <Button
+            title={loginState ? "LOG IN" : "SIGN UP"}
+            buttonStyle={{
+              backgroundColor: 'black',
+              borderWidth: 2,
+              borderColor: 'white',
+              borderRadius: 30,
+            }}
+            containerStyle={{
+              width: 200,
+              marginHorizontal: 50,
+              marginVertical: 10,
+            }}
+            titleStyle={{ fontWeight: 'bold' }}
+            onPress={() => handleSubmit()}
+          />
+          <Button
+            title={loginState ? "go to sign up" : "go to log in"}
+            buttonStyle={{
+              backgroundColor: 'rgba(100, 100, 100, 50)',
+              borderColor: 'transparent',
+              borderWidth: 0,
+              borderRadius: 30,
+            }}
+            containerStyle={{
+              width: 200,
+              height: 50,
+              marginHorizontal: 50,
+              marginVertical: 10,
+            }}
+            titleStyle={{ fontWeight: 'bold' }}
+            onPress={() => setLoginState(loginState => !loginState)}
+          />
+        </View>
+        <View style={styles.imageContainer}>
+          <Image source={PlaceholderImage} style={styles.image} />
+        </View>
+        <StatusBar style="auto" />
+      </ScrollView>
     </SafeAreaView>
   );
 }
