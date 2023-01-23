@@ -4,9 +4,8 @@ import { Button } from '@rneui/themed';
 export default function LandingPage({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={styles.buttonList}>
-          <Text style={styles.buttonLabel}>Waiting Room</Text>
           <Button
               title="Create Room"
               buttonStyle={{
@@ -18,7 +17,7 @@ export default function LandingPage({ navigation }) {
                 marginHorizontal: 50,
                 height: 50,
                 width: 200,
-                marginVertical: 10,
+                marginVertical: 20,
               }}
               onPress={() => navigation.navigate('CreateRoom')}
             />
@@ -33,7 +32,7 @@ export default function LandingPage({ navigation }) {
                 marginHorizontal: 50,
                 height: 50,
                 width: 200,
-                marginVertical: 10,
+                marginVertical: 20,
               }}
               onPress={() => navigation.navigate('EnterPrivate')}
             />
@@ -48,7 +47,7 @@ export default function LandingPage({ navigation }) {
                 marginHorizontal: 50,
                 height: 50,
                 width: 200,
-                marginVertical: 10,
+                marginVertical: 20,
               }}
               onPress={() => navigation.navigate('ChoosePublic')}
             />
@@ -62,13 +61,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#5A5A5A', // '#25292e'
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
   },
   buttonList: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonLabel: {
     color: '#fff',
