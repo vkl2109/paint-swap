@@ -19,17 +19,27 @@ export default function CreateRoom({ navigation }) {
 
 
     const handleSubmit = async () => {
-        // let req = await fetch('http://localhost:3000/rooms', {
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         name: text,
-        //         private: privateRoom,
-        //         occupied: false
-        //     }),
-        //     headers: { 'Content-Type': 'application/json' }
-        // })
-        // let res = await req.json()
-        // console.log(res)
+        let req = await fetch('http://localhost:3000/rooms', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: text,
+                private: privateRoom,
+                occupied: false
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        let res = await req.json()
+        if (res.status === 'success') {
+            const socket = io('http://localhost:3000', {
+                query: {
+                    room: text
+                }
+            })
+            socket.emit('join', text)
+        } else {
+            alert(res.message)
+        }
+        console.log(res)
         setShowMessage(true)
     }
 
