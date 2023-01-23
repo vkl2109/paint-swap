@@ -33,7 +33,7 @@ class Room(db.Model):
     # __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    host_sid = db.Column(db.String, unique=True, nullable=False)
+    # host_sid = db.Column(db.String, unique=True, nullable=False)
     private = db.Column(db.Boolean, nullable=False)
     occupied = db.Column(db.Boolean)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
@@ -41,13 +41,13 @@ class Room(db.Model):
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def toJSON(self):
-        return {"id": self.id, "name": self.username, "private": self.private, "occupied": self.occupied, "host_sid": self.host_sid}
+        return {"id": self.id, "name": self.username, "private": self.private, "occupied": self.occupied}
 
-    def __init__(self, name, private, occupied, host_sid):
+    def __init__(self, name, private, occupied):
         self.name = name
         self.private = private
         self.occupied = occupied
-        self.host_sid = host_sid
+        # self.host_sid = host_sid
 
     def __repr__(self):
         return '<Room %r>' % self.name
