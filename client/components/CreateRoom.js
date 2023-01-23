@@ -1,5 +1,7 @@
-import { StyleSheet, View, Pressable, Text, TextInput, Switch } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, Switch } from 'react-native';
 import { useState, useEffect } from 'react'
+import { Button } from '@rneui/themed';
+
 
 export default function CreateRoom({ navigation }) {
 
@@ -17,54 +19,79 @@ export default function CreateRoom({ navigation }) {
 
 
     const handleSubmit = async () => {
-        let req = await fetch('http://localhost:3000/rooms', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: text,
-                private: privateRoom,
-                occupied: false
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        })
-        let res = await req.json()
-        console.log(res)
+        // let req = await fetch('http://localhost:3000/rooms', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         name: text,
+        //         private: privateRoom,
+        //         occupied: false
+        //     }),
+        //     headers: { 'Content-Type': 'application/json' }
+        // })
+        // let res = await req.json()
+        // console.log(res)
         setShowMessage(true)
     }
 
     return (
-        <View>
-            {showMessage ? (
+        <SafeAreaView style={styles.container}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <View>
-                    <Text> Waiting for a user to join {text}...</Text>
+                    {showMessage ? (
+                        <View>
+                            <Text> Waiting for a user to join {text}...</Text>
+                        </View>
+                    ) : (
+                        <View style={styles.buttonContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Room Name"
+                                placeholderTextColor="rgba(300, 300, 300, 0.3)"
+                                maxLength={20}
+                                onChangeText={text => onChangeText(text)}
+                                value={text}
+                            />
+                            <View style={styles.checkboxContainer}>
+                                <Switch
+                                    value={privateRoom}
+                                    onValueChange={setPrivateRoom}
+                                    style={styles.checkbox}
+                                />
+                                <Text style={styles.label}>This is a private room</Text>
+                            </View>
+                            <Button
+                                title="Create Room"
+                                titleStyle={{ fontWeight: '700' }}
+                                buttonStyle={{
+                                    backgroundColor: 'rgba(90, 154, 230, 1)',
+                                    borderColor: 'transparent',
+                                    borderWidth: 0,
+                                    borderRadius: 30,
+                                }}
+                                containerStyle={{
+                                    width: 200,
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                }}
+                                onPress={() => handleSubmit()}
+                            />
+                        </View>
+                    )}
                 </View>
-            ) : (
-                <View style={styles.buttonContainer}>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Room Name"
-                        maxLength={20}
-                        onChangeText={text => onChangeText(text)}
-                        value={text}
-                    />
-                    <View style={styles.checkboxContainer}>
-                        <Switch
-                            value={privateRoom}
-                            onValueChange={setPrivateRoom}
-                            style={styles.checkbox}
-                        />
-                        <Text style={styles.label}>This is a private room</Text>
-                    </View>
-                    <Pressable style={styles.button} onPress={() => handleSubmit()}>
-                        <Text style={styles.buttonLabel}>Create a Room</Text>
-                    </Pressable>
-                </View>
-            )}
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#5A5A5A', // '#25292e'
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     buttonContainer: {
+        flex: 1,
         width: 320,
         height: 68,
         marginHorizontal: 20,
@@ -94,7 +121,9 @@ const styles = StyleSheet.create({
         height: 50,
         fontSize: 25,
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        color: '#CCCCCC',
+        marginVertical: 20
     },
     checkboxContainer: {
         flexDirection: 'row',

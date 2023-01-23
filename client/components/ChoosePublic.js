@@ -1,10 +1,10 @@
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { Button } from '@rneui/themed';
 
 export default function ChoosePublic({ navigation }) {
 
     const [rooms, setRooms] = useState([])
-
 
     useEffect(() => {
         const request = async () => {
@@ -14,7 +14,7 @@ export default function ChoosePublic({ navigation }) {
             setRooms(res)
             console.log(rooms)
         }
-    })
+    },[])
 
 
     const handleRoom = (room) => {
@@ -27,18 +27,27 @@ export default function ChoosePublic({ navigation }) {
 
 
     return (
-        <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Enter a Public Room</Text>
-            <FlatList data={rooms} renderItem={({ room }) => (
-                <TouchableOpacity onPress={() => { handleRoom(room) }}>
-                    <Text>Room: {room.name}</Text>
-                </TouchableOpacity>
-            )} />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.buttonContainer}>
+                <Text style={styles.buttonLabel}>Enter a Public Room</Text>
+                <FlatList data={rooms} renderItem={({ room }) => (
+                    <TouchableOpacity onPress={() => { handleRoom(room) }}>
+                        <Text>Room: {room.name}</Text>
+                    </TouchableOpacity>
+                )} />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#5A5A5A', // '#25292e'
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     buttonContainer: {
         width: 320,
         height: 68,

@@ -1,41 +1,64 @@
-import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput } from 'react-native';
 import { useState } from 'react'
+import { Button } from '@rneui/themed';
+
 
 export default function EnterPrivate({ navigation }) {
 
     const [name, onChangeName] = useState('')
 
     const handleSubmit = async () => {
-        let req = await fetch(`http://localhost:3000/rooms/${name}`)
-        let res = await req.json()
-        console.log(res)
+        // let req = await fetch(`http://localhost:3000/rooms/${name}`)
+        // let res = await req.json()
+        // console.log(res)
         navigation.navigate('PaintRoom', res)
 
         // socket.on('join_room', (data) => {
         //     if (data.status === 'success') {
         //         this.props.navigation.navigate('Room', { roomName });
-
-
-
     }
 
     return (
-        <View style={styles.buttonContainer}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="Room Name"
-                maxLength={20}
-                value={name}
-                onChangeText={onChangeName}
-            />
-            <Pressable style={styles.button} onPress={() => handleSubmit()}>
-                <Text style={styles.buttonLabel}>Enter the Room</Text>
-            </Pressable>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                <View style={styles.buttonContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Room Name"
+                        placeholderTextColor="rgba(300, 300, 300, 0.3)"
+                        maxLength={20}
+                        value={name}
+                        onChangeText={onChangeName}
+                    />
+                    <Button
+                        title="Enter Room"
+                        titleStyle={{ fontWeight: '700' }}
+                        buttonStyle={{
+                            backgroundColor: 'rgba(90, 154, 230, 1)',
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                            borderRadius: 30,
+                        }}
+                        containerStyle={{
+                            width: 200,
+                            marginHorizontal: 50,
+                            marginVertical: 10,
+                        }}
+                        onPress={() => handleSubmit()}
+                    />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#5A5A5A', // '#25292e'
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     buttonContainer: {
         width: 320,
         height: 68,
@@ -66,6 +89,7 @@ const styles = StyleSheet.create({
         height: 50,
         fontSize: 25,
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        marginVertical: 20
     }
 });
