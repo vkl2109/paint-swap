@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const newSocket = io("http://172.31.172.106:5000/", {
       extraHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        // Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
 
