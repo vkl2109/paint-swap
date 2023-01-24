@@ -1,6 +1,7 @@
 import { Button } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function CreateRoom({ navigation, socket, loginData }) {
@@ -19,11 +20,12 @@ export default function CreateRoom({ navigation, socket, loginData }) {
     }, [socket])
 
     const handleSubmit = async () => {
+        const token = await AsyncStorage.getItem('token')
         let req = await fetch('http://10.129.2.90:5000/rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${loginData.token}`
+                'Authorization': `Bearer ${JSON.parse(token)}`
             },
             body: JSON.stringify({
                 name: text,
