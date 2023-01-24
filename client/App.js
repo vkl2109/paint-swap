@@ -12,51 +12,53 @@ import CreateRoom from './components/CreateRoom';
 import EnterPrivate from './components/EnterPrivate';
 import PaintRoom from './components/PaintRoom';
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [socket, setSocket] = useState(null)
+  const [ loginData, setLoginData ] = useState({})
 
-  useEffect(() => {
-    const newSocket = io("http://10.129.2.90:5000", {
-      extraHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
+  // useEffect(() => {
+  //   const newSocket = io("http://10.129.2.90:5000", {
+  //     extraHeaders: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`
+  //     }
+  //   })
 
-    newSocket.on("connect", (data) => {
-      console.log(data);
-    })
+  //   newSocket.on("connect", (data) => {
+  //     console.log(data);
+  //   })
 
-    // socket.on("data", (data) => {
-    //   console.log(data);
-    // });
+  //   // socket.on("data", (data) => {
+  //   //   console.log(data);
+  //   // });
 
-    // socket.on("disconnect", (data) => {
-    //   console.log(data);
-    // });
+  //   // socket.on("disconnect", (data) => {
+  //   //   console.log(data);
+  //   // });
 
-    setSocket(newSocket)
+  //   setSocket(newSocket)
 
-    return function cleanup() {
-      // socket.disconnect()
-    }
-  }, [])
+  //   return function cleanup() {
+  //     // socket.disconnect()
+  //   }
+  // }, [])
 
 
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='Login' >
+          {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket}/>}
+          </Stack.Screen>
           <Stack.Screen name='LandingPage' component={LandingPage} />
           <Stack.Screen name='ChoosePublic' component={ChoosePublic} />
           <Stack.Screen name='CreateRoom'>
-            {props => <CreateRoom {...props} socket={socket} />}
+            {props => <CreateRoom {...props} socket={socket} loginData={loginData}/>}
           </Stack.Screen>
           <Stack.Screen name='EnterPrivate'>
-            {props => <EnterPrivate {...props} socket={socket} />}
+            {props => <EnterPrivate {...props} socket={socket} loginData={loginData} />}
           </Stack.Screen>
           <Stack.Screen name='PaintRoom' component={PaintRoom} />
         </Stack.Navigator>

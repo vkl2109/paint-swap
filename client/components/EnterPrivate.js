@@ -3,15 +3,20 @@ import { useState, useEffect } from 'react'
 import { Button } from '@rneui/themed';
 
 
-export default function EnterPrivate({ navigation, socket }) {
+export default function EnterPrivate({ navigation, socket, loginData }) {
 
     const [name, onChangeName] = useState('')
 
     const handleSubmit = async () => {
 
-        // let req = await fetch(`http://10.129.2.90:5000/rooms/${name}`)
-        // let res = await req.json()
-
+        let req = await fetch(`http://10.129.2.90:5000/rooms/${name}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${loginData.token}`
+            }
+        })
+        let res = await req.json()
     }
 
 

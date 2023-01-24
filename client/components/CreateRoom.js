@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 
-export default function CreateRoom({ navigation, socket }) {
+export default function CreateRoom({ navigation, socket, loginData }) {
 
     const [text, onChangeText] = useState('')
     const [showMessage, setShowMessage] = useState(false)
@@ -23,7 +23,7 @@ export default function CreateRoom({ navigation, socket }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${loginData.token}`
             },
             body: JSON.stringify({
                 name: text,

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Image, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Button, Dialog } from '@rneui/themed';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import { io } from "socket.io-client";
+
+// import { AsyncStorage } from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
-export default function Login({ navigation }) {
+export default function Login({ navigation, loginData, setLoginData, setSocket }) {
   const [username, onChangeUserName] = useState('')
   const [password, onChangePassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
@@ -27,12 +29,19 @@ export default function Login({ navigation }) {
         let res = await req.json()
         if (req.ok) {
           setErrorMsg('')
-          let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
-          // setLoginData(newUser)
-          // localStorage.setItem('token', res.token)
-          console.log(res.token)
-          await AsyncStorage.setItem('token', JSON.stringify(res.token))
+          setLoginData(res)
+          // await AsyncStorage.setItem('token', JSON.stringify(res.token))
           navigation.navigate('LandingPage')
+          const newSocket = io("http://10.129.2.90:5000", {
+            extraHeaders: {
+              Authorization: `Bearer ${res.token}`
+            }
+          })
+
+          newSocket.on("connect", (data) => {
+            console.log(data);
+          })
+          setSocket(newSocket)
         }
         else {
           setErrorMsg(res.error)
