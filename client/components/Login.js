@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://172.31.172.106:5000/login", {
+        let req = await fetch("http://172.29.1.114:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({

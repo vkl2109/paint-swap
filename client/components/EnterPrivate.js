@@ -8,19 +8,22 @@ export default function EnterPrivate({ navigation, socket }) {
     const [name, onChangeName] = useState('')
 
     const handleSubmit = async () => {
-        // let req = await fetch(`http://172.31.172.106:5000/rooms/${name}`)
-        // let res = await req.json()
-        // console.log(res)
+
+        let req = await fetch(`http://172.29.1.114:5000/rooms/${name}`)
+        let res = await req.json()
+
+
         navigation.navigate('PaintRoom', { roomID: 1 })
 
     }
 
 
     useEffect(() => {
-        socket.on('join_success', (roomID) => {
-            navigation.navigate('PaintRoom', { roomID });
+        socket.on('join_success', (room) => {
+            console.log(room.message)
+            navigation.navigate('PaintRoom', { roomID: room.message });
         });
-    })
+    }, [socket])
 
     return (
         <SafeAreaView style={styles.container}>
