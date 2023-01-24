@@ -62,18 +62,17 @@ def create_user():
     return jsonify(user.toJSON()), 201
 
 
-@app.get('/rooms/<name>')
-# @jwt_required()
+@app.post('/rooms/<name>')
+@jwt_required()
 def join_private_room(name):
     room = Room.query.filter_by(room_name=name).first()
-    # current_user = User.query.get(get_jwt_identity())
-    # room.player_sid = current_user.sid
+    current_user = User.query.get(get_jwt_identity())
+    room.player_sid = current_user.sid
     # print(current_user.sid)
     socketio.emit('join_success', {
         'message': f'{room.id}'}, room=room.host_sid)
-    # socketio.emit('join_success', {
-    #     'message': f'{room.id}'}, room=current_user.sid)
-    # room = room.host_sid
+    socketio.emit('join_success', {
+        'message': f'{room.id}'}, room=current_user.sid)
     return jsonify(room.toJSON()), 201
 
 
@@ -93,7 +92,7 @@ def create_room():
     return jsonify(room.toJSON()), 201
 
 
-@app.get('/rooms/<id>')
+@app.get('/rooms/<int:id>')
 @jwt_required()
 def join_room(id):
     # data = request.json
