@@ -10,7 +10,7 @@ export default function PaintRoom({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Canvas /> */}
+      <Canvas />
       <Text>You are in Room: {roomID}</Text>
     </SafeAreaView>
   )

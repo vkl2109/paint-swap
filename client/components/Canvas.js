@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
-import RNDrawOnScreen from 'react-native-draw-on-screen';
+// import RNDrawOnScreen from 'react-native-draw-on-screen';
 import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
 import { Button } from '@rneui/themed';
@@ -110,11 +110,11 @@ export default function Canvas() {
                 ref={imageRef} collapsable={false}
             >
                 <ImageBackground source={PlaceholderImage} style={styles.image}>
-                    <RNDrawOnScreen
-                        penColor={color}
-                        strokeWidth={strokeWidth}
-                        ref={RNDraw}
-                    />
+                    {/* <RNDrawOnScreen
+                    penColor={color}
+                    strokeWidth={strokeWidth}
+                    ref={RNDraw}
+                /> */}
                 </ImageBackground>
             </View>
         </SafeAreaView>
