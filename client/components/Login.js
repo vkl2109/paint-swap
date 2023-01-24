@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Button, Dialog } from '@rneui/themed';
 import { io } from "socket.io-client";
 
-// import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Login({ navigation, loginData, setLoginData, setSocket }) {
@@ -29,8 +29,9 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
         let res = await req.json()
         if (req.ok) {
           setErrorMsg('')
-          setLoginData(res)
-          // await AsyncStorage.setItem('token', JSON.stringify(res.token))
+          let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
+          setLoginData(newUser)
+          await AsyncStorage.setItem('token', JSON.stringify(res.token))
           navigation.navigate('LandingPage')
           const newSocket = io("http://10.129.2.90:5000", {
             extraHeaders: {
