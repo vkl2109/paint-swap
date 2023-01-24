@@ -55,7 +55,9 @@ export default function App() {
           <Stack.Screen name='CreateRoom'>
             {props => <CreateRoom {...props} socket={socket} />}
           </Stack.Screen>
-          <Stack.Screen name='EnterPrivate' component={EnterPrivate} />
+          <Stack.Screen name='EnterPrivate'>
+            {props => <EnterPrivate {...props} socket={socket} />}
+          </Stack.Screen>
           <Stack.Screen name='PaintRoom' component={PaintRoom} />
         </Stack.Navigator>
       </NavigationContainer>
