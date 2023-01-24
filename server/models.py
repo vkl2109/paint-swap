@@ -12,18 +12,20 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    sid = db.Column(db.String(120))
     avatarUrl = db.Column(db.String(120))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def toJSON(self):
-        return {"id": self.id, "username": self.username, "password": self.password, "avatarUrl": self.avatarUrl}
+        return {"id": self.id, "username": self.username, "password": self.password, "avatarUrl": self.avatarUrl, "sid": self.sid}
 
-    def __init__(self, username, password, avatarUrl):
+    def __init__(self, username, password, avatarUrl, sid):
         self.username = username
         self.password = password
         self.avatarUrl = avatarUrl
+        self.sid = sid
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -32,8 +34,9 @@ class User(db.Model):
 class Room(db.Model):
     # __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    # host_sid = db.Column(db.String, unique=True, nullable=False)
+    room_name = db.Column(db.String(80), unique=True, nullable=False)
+    host_sid = db.Column(db.String, unique=True, nullable=False)
+    player_sid = db.Column(db.String, unique=True)
     private = db.Column(db.Boolean, nullable=False)
     occupied = db.Column(db.Boolean)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
@@ -41,13 +44,14 @@ class Room(db.Model):
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def toJSON(self):
-        return {"id": self.id, "name": self.username, "private": self.private, "occupied": self.occupied}
+        return {"id": self.id, "room_name": self.room_name, "private": self.private, "occupied": self.occupied, "host_sid": self.host_sid, "player_sid": self.player_sid}
 
-    def __init__(self, name, private, occupied):
-        self.name = name
+    def __init__(self, room_name, private, occupied=False, host_sid='', player_sid=None):
+        self.room_name = room_name
         self.private = private
         self.occupied = occupied
-        # self.host_sid = host_sid
+        self.host_sid = host_sid
+        self.player_sid = player_sid
 
     def __repr__(self):
         return '<Room %r>' % self.name
@@ -66,7 +70,7 @@ class Canvas(db.Model):
         return {"id": self.id, "theme": self.theme, "svg": self.svg}
 
     def __init__(self, theme, svg):
-        self.name = theme
+        self.theme = theme
         self.svg = svg
 
     def __repr__(self):

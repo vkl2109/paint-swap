@@ -1,46 +1,36 @@
-import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, Switch } from 'react-native';
-import { useState, useEffect } from 'react'
 import { Button } from '@rneui/themed';
+import { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 
-export default function CreateRoom({ navigation }) {
+export default function CreateRoom({ navigation, socket }) {
 
     const [text, onChangeText] = useState('')
     const [showMessage, setShowMessage] = useState(false)
-    const [privateRoom, setPrivateRoom] = useState(false);
+    const [privateRoom, setPrivateRoom] = useState(false)
 
 
-    // useEffect(()=>{
-    //     socket.on('navigate_to_room', (roomName) => {
-    //         navigation.navigate('Room', { roomName });
-    //     });
-    // })
-
-
+    useEffect(() => {
+        socket.on('join_success', (roomID) => {
+            navigation.navigate('PaintRoom', { roomID });
+        });
+    })
 
     const handleSubmit = async () => {
-        let req = await fetch('http://localhost:5000/rooms', {
+        let req = await fetch('http://172.31.172.106:5000/rooms', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify({
                 name: text,
                 private: privateRoom,
-                occupied: false
             }),
         })
-        // let res = await req.json()
-        if (req.ok) {
-            // const socket = io('http://localhost:3000', {
-            //     query: {
-            //         room: text
-            //     }
-            // })
-            // socket.emit('join', text)
-            setShowMessage(true)
-        } else {
-            // alert(res.message)
-        }
-        // console.log(res)
+        let res = await req.json()
+        console.log(res)
+        setShowMessage(true)
     }
 
     return (
@@ -83,7 +73,7 @@ export default function CreateRoom({ navigation }) {
                                     marginHorizontal: 50,
                                     marginVertical: 10,
                                 }}
-                                onPress={() => handleSubmit()}
+                                onPress={handleSubmit}
                             />
                         </View>
                     )}

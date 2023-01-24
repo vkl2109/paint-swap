@@ -1,22 +1,26 @@
 import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput } from 'react-native';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@rneui/themed';
 
 
-export default function EnterPrivate({ navigation }) {
+export default function EnterPrivate({ navigation, socket }) {
 
     const [name, onChangeName] = useState('')
 
     const handleSubmit = async () => {
-        // let req = await fetch(`http://localhost:3000/rooms/${name}`)
-        // let res = await req.json()
+        let req = await fetch(`http://172.31.172.106:5000/rooms/${name}`)
+        let res = await req.json()
         // console.log(res)
-        navigation.navigate('PaintRoom', { roomID: 1 })
+        // navigation.navigate('PaintRoom', { roomID: 1 })
 
-        // socket.on('join_room', (data) => {
-        //     if (data.status === 'success') {
-        //         this.props.navigation.navigate('Room', { roomName });
     }
+
+
+    useEffect(() => {
+        socket.on('join_success', (roomID) => {
+            navigation.navigate('PaintRoom', { roomID });
+        });
+    })
 
     return (
         <SafeAreaView style={styles.container}>
