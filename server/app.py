@@ -5,7 +5,7 @@ from flask_cors import CORS
 from config import Config
 from models import db, User, Room, Canvas
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
-# from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit
 
 
 app = Flask(__name__, static_folder='public')
@@ -14,7 +14,7 @@ app.config.from_object(Config)
 jwt = JWTManager(app)
 db.init_app(app)
 migrate = Migrate(app, db)
-# socketio = SocketIO(app, cors_allowed_origins='*')
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 @app.get('/')
@@ -81,11 +81,11 @@ def create_room():
     return jsonify(room.toJSON()), 201
 
 
-# @socketio.on('connect')
-# def connected():
-#     '''This function is an event listener that gets called when the client connects to the server'''
-#     print(f'Client {request.sid} has connected')
-#     emit('connect', {'data': f'id: {request.sid} is connected'})
+@socketio.on('connect')
+def connected():
+    '''This function is an event listener that gets called when the client connects to the server'''
+    print(f'Client {request.sid} has connected')
+    emit('connect', {'data': f'id: {request.sid} is connected'})
 
 
 # @socketio.on('data')

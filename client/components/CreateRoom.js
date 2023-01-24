@@ -19,7 +19,7 @@ export default function CreateRoom({ navigation }) {
 
 
     const handleSubmit = async () => {
-        let req = await fetch('http://localhost:5000/rooms', {
+        let req = await fetch('http://172.31.172.106:5000/rooms', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -29,17 +29,18 @@ export default function CreateRoom({ navigation }) {
             }),
         })
         // let res = await req.json()
-        if (req.ok) {
-            // const socket = io('http://localhost:3000', {
-            //     query: {
-            //         room: text
-            //     }
-            // })
-            // socket.emit('join', text)
-            setShowMessage(true)
-        } else {
-            // alert(res.message)
-        }
+        // if (req.ok) {
+        //     const socket = io('http://localhost:3000', {
+        //         query: {
+        //             room: text
+        //         }
+        //     })
+        //     socket.emit('join', text)
+        //     setShowMessage(true)
+        // } else {
+        //     console.log(res)
+
+        // }
         // console.log(res)
     }
 

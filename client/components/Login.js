@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://127.0.0.1:3001/login", {
+        let req = await fetch("http://172.23.222.246:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -39,7 +39,7 @@ export default function Login({ navigation }) {
     }
     else {
       const signup = async () => {
-        let req = await fetch("http://localhost:3001/users", {
+        let req = await fetch("http://172.31.172.106:5000/users", {
           method: "POST",
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({
@@ -64,16 +64,16 @@ export default function Login({ navigation }) {
     navigation.navigate('LandingPage')
   }
 
-  const toggleErrorDialog = () =>{
+  const toggleErrorDialog = () => {
     setErrorDialog(false)
     setErrorMsg('')
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (errorMsg != '') {
       setErrorDialog(true)
     }
-  },[errorMsg])
+  }, [errorMsg])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +86,7 @@ export default function Login({ navigation }) {
             isVisible={errorDialog}
             onBackdropPress={toggleErrorDialog}
           >
-            <Dialog.Title style={styles.dialogTitle}title={loginState ? "Log In Error" : "Sign Up Error"}/>
+            <Dialog.Title style={styles.dialogTitle} title={loginState ? "Log In Error" : "Sign Up Error"} />
             <Text style={styles.dialogText}>{errorMsg}</Text>
           </Dialog>
           <Button
