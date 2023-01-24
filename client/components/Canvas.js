@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
 import RNDrawOnScreen from 'react-native-draw-on-screen';
 import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
 import { Button } from '@rneui/themed';
+const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Canvas () {
     const [status, requestPermission] = MediaLibrary.usePermissions();
@@ -14,6 +15,7 @@ export default function Canvas () {
     const [strokeWidth, setStrokeWidth ] = useState(10)
     const RNDraw = useRef()
     const imageRef = useRef();
+    const image = { uri: "https://docs.expo.dev/static/images/tutorial/splash.png" };
 
     const changeColor = (newColor) => {
         setColor(newColor)
@@ -40,6 +42,7 @@ export default function Canvas () {
 
         await MediaLibrary.saveToLibraryAsync(localUri);
         if (localUri) {
+            console.log(localUri)
             alert("Saved!");
         }
         } catch (e) {
@@ -106,11 +109,13 @@ export default function Canvas () {
         }}
         ref={imageRef} collapsable={false}
         >
-        <RNDrawOnScreen
-            penColor={color}
-            strokeWidth={strokeWidth}
-            ref={RNDraw}
-        />
+            <ImageBackground source={PlaceholderImage} style={styles.image}>
+                <RNDrawOnScreen
+                    penColor={color}
+                    strokeWidth={strokeWidth}
+                    ref={RNDraw}
+                />
+            </ImageBackground>
         </View>
     </SafeAreaView>
     );
@@ -130,4 +135,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    image: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+  },
 });
