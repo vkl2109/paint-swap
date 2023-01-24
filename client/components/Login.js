@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://172.23.222.246:5000/login", {
+        let req = await fetch("http://172.31.172.106:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -28,14 +28,14 @@ export default function Login({ navigation }) {
           setErrorMsg('')
           let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
           // setLoginData(newUser)
-          // localStorage.setItem('token', res.token)
+          localStorage.setItem('token', res.token)
           navigation.navigate('LandingPage')
         }
         else {
           setErrorMsg(res.error)
         }
       }
-      // login()
+      login()
     }
     else {
       const signup = async () => {

@@ -18,7 +18,11 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   useEffect(() => {
-    const socket = io("http://172.31.172.106:5000/");
+    const socket = io("http://172.31.172.106:5000/", {
+      extraHeaders: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
 
     socket.on("connect", (data) => {
       console.log(data);
