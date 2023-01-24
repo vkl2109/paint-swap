@@ -8,10 +8,12 @@ export default function EnterPrivate({ navigation, socket }) {
     const [name, onChangeName] = useState('')
 
     const handleSubmit = async () => {
+
         let req = await fetch(`http://172.29.1.114:5000/rooms/${name}`)
         let res = await req.json()
-        // console.log(res)
-        // navigation.navigate('PaintRoom', { roomID: 1 })
+
+
+        navigation.navigate('PaintRoom', { roomID: 1 })
 
     }
 
