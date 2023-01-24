@@ -1,13 +1,13 @@
-import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, Switch } from 'react-native';
-import { useState, useEffect } from 'react'
 import { Button } from '@rneui/themed';
+import { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 
-export default function CreateRoom({ navigation }) {
+export default function CreateRoom({ navigation, socket }) {
 
     const [text, onChangeText] = useState('')
     const [showMessage, setShowMessage] = useState(false)
-    const [privateRoom, setPrivateRoom] = useState(false);
+    const [privateRoom, setPrivateRoom] = useState(false)
 
 
     useEffect(() => {
@@ -15,8 +15,6 @@ export default function CreateRoom({ navigation }) {
             navigation.navigate('PaintRoom', { roomID });
         });
     })
-
-
 
     const handleSubmit = async () => {
         let req = await fetch('http://172.31.172.106:5000/rooms', {
@@ -31,7 +29,8 @@ export default function CreateRoom({ navigation }) {
             }),
         })
         let res = await req.json()
-
+        console.log(res)
+        setShowMessage(true)
     }
 
     return (
@@ -74,7 +73,7 @@ export default function CreateRoom({ navigation }) {
                                     marginHorizontal: 50,
                                     marginVertical: 10,
                                 }}
-                                onPress={() => handleSubmit()}
+                                onPress={handleSubmit}
                             />
                         </View>
                     )}

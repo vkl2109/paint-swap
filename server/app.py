@@ -78,6 +78,10 @@ def join_private_room(name):
 @jwt_required()
 def create_room():
     data = request.json
+
+    if Room.query.filter_by(room_name=data['name']).first():
+        return jsonify('Name taken'), 403
+
     current_user = User.query.get(get_jwt_identity())
     host_sid = current_user.sid
     room = Room(data['name'], data['private'], False, host_sid)
