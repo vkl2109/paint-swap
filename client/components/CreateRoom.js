@@ -11,13 +11,14 @@ export default function CreateRoom({ navigation, socket }) {
 
 
     useEffect(() => {
-        socket.on('join_success', (roomID) => {
-            navigation.navigate('PaintRoom', { roomID });
+        socket.on('join_success', (room) => {
+            console.log('navigating to room id:', room.message)
+            navigation.navigate('PaintRoom', { roomID: room.message });
         });
-    })
+    }, [socket])
 
     const handleSubmit = async () => {
-        let req = await fetch('http://172.31.172.106:5000/rooms', {
+        let req = await fetch('http://172.29.1.114:5000/rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ export default function CreateRoom({ navigation, socket }) {
             }),
         })
         let res = await req.json()
-        console.log(res)
+        console.log(res.message)
         setShowMessage(true)
     }
 

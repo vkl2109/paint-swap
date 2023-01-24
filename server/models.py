@@ -54,7 +54,7 @@ class Room(db.Model):
         self.player_sid = player_sid
 
     def __repr__(self):
-        return '<Room %r>' % self.name
+        return '<Room %r>' % self.room_name
 
 
 class Canvas(db.Model):
