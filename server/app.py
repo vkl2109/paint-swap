@@ -66,13 +66,13 @@ def create_user():
 # @jwt_required()
 def join_private_room(name):
     room = Room.query.filter_by(room_name=name).first()
-
     # current_user = User.query.get(get_jwt_identity())
     # room.player_sid = current_user.sid
-    # socketio.emit('join_success', {
-    #     'message': f'{room.id}'}, room=current_user.sid)
+    # print(current_user.sid)
     socketio.emit('join_success', {
         'message': f'{room.id}'}, room=room.host_sid)
+    # socketio.emit('join_success', {
+    #     'message': f'{room.id}'}, room=current_user.sid)
     # room = room.host_sid
     return jsonify(room.toJSON()), 201
 
@@ -114,8 +114,6 @@ def join_room(id):
 @socketio.on('connect')
 @jwt_required()
 def connected():
-    '''This function is an event listener that gets called when the client connects to the server'''
-    # print(f'Client {request.sid} has connected')
     current_user = User.query.get(get_jwt_identity())
     current_user.sid = request.sid
     db.session.commit()

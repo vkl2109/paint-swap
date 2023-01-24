@@ -14,6 +14,7 @@ export default function CreateRoom({ navigation, socket }) {
         socket.on('join_success', (room) => {
             console.log('navigating to room id:', room.message)
             navigation.navigate('PaintRoom', { roomID: room.message });
+
         });
     }, [socket])
 
@@ -30,7 +31,7 @@ export default function CreateRoom({ navigation, socket }) {
             }),
         })
         let res = await req.json()
-        console.log(res.message)
+        console.log(res)
         setShowMessage(true)
     }
 
