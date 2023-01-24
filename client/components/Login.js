@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Image, SafeAreaView, ScrollView, View, Pressable, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Button, Dialog } from '@rneui/themed';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 export default function Login({ navigation }) {
@@ -28,7 +29,9 @@ export default function Login({ navigation }) {
           setErrorMsg('')
           let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
           // setLoginData(newUser)
-          localStorage.setItem('token', res.token)
+          // localStorage.setItem('token', res.token)
+          console.log(res.token)
+          await AsyncStorage.setItem('token', JSON.stringify(res.token))
           navigation.navigate('LandingPage')
         }
         else {

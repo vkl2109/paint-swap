@@ -6,15 +6,16 @@ import { captureRef } from 'react-native-view-shot';
 import { Button } from '@rneui/themed';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
-export default function Canvas () {
+export default function Canvas() {
     const [status, requestPermission] = MediaLibrary.usePermissions();
     if (status === null) {
         requestPermission();
     }
-    const [ color, setColor ] = useState('black')
-    const [strokeWidth, setStrokeWidth ] = useState(10)
+    const [color, setColor] = useState('black')
+    const [strokeWidth, setStrokeWidth] = useState(10)
     const RNDraw = useRef()
     const imageRef = useRef();
+    // const image = { uri: "https://docs.expo.dev/static/images/tutorial/splash.png" };
 
     const changeColor = (newColor) => {
         setColor(newColor)
@@ -34,89 +35,89 @@ export default function Canvas () {
 
     const onSaveImageAsync = async () => {
         try {
-        const localUri = await captureRef(imageRef, {
-            height: 440,
-            quality: 1,
-        });
+            const localUri = await captureRef(imageRef, {
+                height: 440,
+                quality: 1,
+            });
 
-        await MediaLibrary.saveToLibraryAsync(localUri);
-        if (localUri) {
-            console.log(localUri)
-            alert("Saved!");
-        }
+            await MediaLibrary.saveToLibraryAsync(localUri);
+            if (localUri) {
+                console.log(localUri)
+                alert("Saved!");
+            }
         } catch (e) {
-        console.log(e);
+            console.log(e);
         }
     };
 
     return (
-    <SafeAreaView style={styles.container}>
-        <View style={styles.buttons}>
-            <Button
-            title="Undo"
-            buttonStyle={{
-                backgroundColor: 'rgba(244, 244, 244, 1)',
-                borderRadius: 20,
-            }}
-            containerStyle={{
-                height: 40,
-                width: 120,
-                marginHorizontal: 10,
-                marginVertical: 10,
-            }}
-            titleStyle={{ marginHorizontal: 20, color: 'black' }}
-            onPress={() => undo()}
-            />
-            <Button
-            title="Clear"
-            buttonStyle={{
-                backgroundColor: 'rgba(244, 244, 244, 1)',
-                borderRadius: 20,
-            }}
-            containerStyle={{
-                height: 40,
-                width: 120,
-                marginHorizontal: 10,
-                marginVertical: 10,
-            }}
-            titleStyle={{ marginHorizontal: 20, color: 'black' }}
-            onPress={() => clear()}
-            />
-            <Button
-            title="Save"
-            buttonStyle={{
-                backgroundColor: 'rgba(244, 244, 244, 1)',
-                borderRadius: 20,
-            }}
-            containerStyle={{
-                height: 40,
-                width: 120,
-                marginHorizontal: 10,
-                marginVertical: 10,
-            }}
-            titleStyle={{ marginHorizontal: 20, color: 'black' }}
-            onPress={() => onSaveImageAsync()}
-            />
-        </View>
-        <View
-        style={{
-            height: 300,
-            width: 300,
-            border: 'solid',
-            borderWidth: 2,
-            borderColor: '#ccc',
-        }}
-        ref={imageRef} collapsable={false}
-        >
-            <ImageBackground source={PlaceholderImage} style={styles.image}>
-                {/* <RNDrawOnScreen
+        <SafeAreaView style={styles.container}>
+            <View style={styles.buttons}>
+                <Button
+                    title="Undo"
+                    buttonStyle={{
+                        backgroundColor: 'rgba(244, 244, 244, 1)',
+                        borderRadius: 20,
+                    }}
+                    containerStyle={{
+                        height: 40,
+                        width: 120,
+                        marginHorizontal: 10,
+                        marginVertical: 10,
+                    }}
+                    titleStyle={{ marginHorizontal: 20, color: 'black' }}
+                    onPress={() => undo()}
+                />
+                <Button
+                    title="Clear"
+                    buttonStyle={{
+                        backgroundColor: 'rgba(244, 244, 244, 1)',
+                        borderRadius: 20,
+                    }}
+                    containerStyle={{
+                        height: 40,
+                        width: 120,
+                        marginHorizontal: 10,
+                        marginVertical: 10,
+                    }}
+                    titleStyle={{ marginHorizontal: 20, color: 'black' }}
+                    onPress={() => clear()}
+                />
+                <Button
+                    title="Save"
+                    buttonStyle={{
+                        backgroundColor: 'rgba(244, 244, 244, 1)',
+                        borderRadius: 20,
+                    }}
+                    containerStyle={{
+                        height: 40,
+                        width: 120,
+                        marginHorizontal: 10,
+                        marginVertical: 10,
+                    }}
+                    titleStyle={{ marginHorizontal: 20, color: 'black' }}
+                    onPress={() => onSaveImageAsync()}
+                />
+            </View>
+            <View
+                style={{
+                    height: 300,
+                    width: 300,
+                    border: 'solid',
+                    borderWidth: 2,
+                    borderColor: '#ccc',
+                }}
+                ref={imageRef} collapsable={false}
+            >
+                <ImageBackground source={PlaceholderImage} style={styles.image}>
+                    {/* <RNDrawOnScreen
                     penColor={color}
                     strokeWidth={strokeWidth}
                     ref={RNDraw}
                 /> */}
-            </ImageBackground>
-        </View>
-    </SafeAreaView>
+                </ImageBackground>
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -138,5 +139,5 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'cover',
         justifyContent: 'center',
-  },
+    },
 });

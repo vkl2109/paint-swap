@@ -12,9 +12,6 @@ export default function EnterPrivate({ navigation, socket }) {
         // let req = await fetch(`http://10.129.2.90:5000/rooms/${name}`)
         // let res = await req.json()
 
-
-        navigation.navigate('PaintRoom', { roomID: 1 })
-
     }
 
 
