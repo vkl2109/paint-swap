@@ -76,8 +76,28 @@ def postimage():
         print(data['uri'])
     else:
         print('session id not found: ' + current_user.sid)
+    if room.hostURI != '' and room.playerURI != '':
+        socketio.emit('upload_success', {
+            'message': f'{room.id}'}, room=room.host_sid)
+        socketio.emit('upload_success', {
+            'message': f'{room.id}'}, room=current_user.sid)
     db.session.commit()
     return jsonify(room.toJSON()), 201
+
+
+@app.post('/getimage')
+@jwt_required()
+def getimage():
+    data = request.json
+    room = Room.query.get(data['id'])
+    current_user = User.query.get(get_jwt_identity())
+    if current_user.sid == room.player_sid:
+        return jsonify(room.hostURI), 201
+    elif current_user.sid == room.host_sid:
+        return jsonify(room.playerURI), 201
+    else:
+        return { 'error':'no ID found'}, 404
+    
 
 @app.post('/rooms/<name>')
 @jwt_required()

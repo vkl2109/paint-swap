@@ -11,6 +11,7 @@ import ChoosePublic from './components/ChoosePublic';
 import CreateRoom from './components/CreateRoom';
 import EnterPrivate from './components/EnterPrivate';
 import PaintRoom from './components/PaintRoom';
+import ArtistSpace from './components/ArtistSpace';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ export default function App() {
             {props => <EnterPrivate {...props} socket={socket} loginData={loginData} />}
           </Stack.Screen>
           <Stack.Screen name='PaintRoom' component={PaintRoom} />
+          <Stack.Screen name='ArtistSpace' component={ArtistSpace} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

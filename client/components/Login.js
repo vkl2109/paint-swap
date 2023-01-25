@@ -46,6 +46,9 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
             console.log(room.message)
             navigation.navigate('PaintRoom', { roomID: room.message });
           });
+          newSocket.on('upload_success', (room) => {
+            navigation.navigate('ArtistSpace', { roomID: room.message })
+          })
           setSocket(newSocket)
           navigation.navigate('LandingPage')
         }
@@ -154,7 +157,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5A5A5A', // '#25292e'
+    backgroundColor: '#F5EA9D', // '#25292e'
     alignItems: 'center',
   },
   image: {

@@ -11,13 +11,13 @@ export default function CreateRoom({ navigation, socket, loginData }) {
     const [privateRoom, setPrivateRoom] = useState(false)
 
 
-    useEffect(() => {
-        socket.on('join_success', (room) => {
-            console.log('navigating to room id:', room.message)
-            navigation.navigate('PaintRoom', { roomID: room.message });
+    // useEffect(() => {
+    //     socket.on('join_success', (room) => {
+    //         console.log('navigating to room id:', room.message)
+    //         navigation.navigate('PaintRoom', { roomID: room.message });
 
-        });
-    }, [socket])
+    //     });
+    // }, [socket])
 
     const handleSubmit = async () => {
         const token = await AsyncStorage.getItem('token')
@@ -90,7 +90,7 @@ export default function CreateRoom({ navigation, socket, loginData }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#5A5A5A', // '#25292e'
+        backgroundColor: '#F5EA9D', // '#25292e'
         alignItems: 'center',
         justifyContent: 'center'
     },
