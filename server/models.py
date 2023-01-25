@@ -21,7 +21,7 @@ class User(db.Model):
     def toJSON(self):
         return {"id": self.id, "username": self.username, "password": self.password, "avatarUrl": self.avatarUrl, "sid": self.sid}
 
-    def __init__(self, username, password, avatarUrl, sid):
+    def __init__(self, username, password, avatarUrl='', sid=''):
         self.username = username
         self.password = password
         self.avatarUrl = avatarUrl
@@ -35,23 +35,25 @@ class Room(db.Model):
     # __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     room_name = db.Column(db.String(80), unique=True, nullable=False)
+    private = db.Column(db.Boolean, nullable=False)
     host_sid = db.Column(db.String, unique=True, nullable=False)
     player_sid = db.Column(db.String, unique=True)
-    private = db.Column(db.Boolean, nullable=False)
-    occupied = db.Column(db.Boolean)
+    hostURI = db.Column(db.String)
+    playerURI = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def toJSON(self):
-        return {"id": self.id, "room_name": self.room_name, "private": self.private, "occupied": self.occupied, "host_sid": self.host_sid, "player_sid": self.player_sid}
+        return {"id": self.id, "room_name": self.room_name, "private": self.private, "host_sid": self.host_sid, "player_sid": self.player_sid}
 
-    def __init__(self, room_name, private, occupied=False, host_sid='', player_sid=None):
+    def __init__(self, room_name, private, host_sid='', player_sid=None, hostURI='', playerURI=''):
         self.room_name = room_name
         self.private = private
-        self.occupied = occupied
         self.host_sid = host_sid
         self.player_sid = player_sid
+        self.hostURI = hostURI
+        self.playerURI = playerURI
 
     def __repr__(self):
         return '<Room %r>' % self.room_name

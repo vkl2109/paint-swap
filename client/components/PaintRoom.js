@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Canvas from './Canvas.js'
-import { SafeAreaView, StyleSheet, Text } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native'
 import Camera from './Camera.js'
 
 
@@ -11,8 +11,9 @@ export default function PaintRoom({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Camera />
-      <Text>You are in Room: {roomID}</Text>
+      {/* <ScrollView> */}
+        <Camera style={styles.container} roomID={roomID}/>
+      {/* </ScrollView> */}
     </SafeAreaView>
   )
 }

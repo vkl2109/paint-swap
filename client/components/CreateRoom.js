@@ -21,7 +21,7 @@ export default function CreateRoom({ navigation, socket, loginData }) {
 
     const handleSubmit = async () => {
         const token = await AsyncStorage.getItem('token')
-        let req = await fetch('http://172.29.1.114:5000/rooms', {
+        let req = await fetch('http://10.129.2.90:5000/rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

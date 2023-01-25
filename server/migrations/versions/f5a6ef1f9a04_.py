@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9845085f7dfc
+Revision ID: f5a6ef1f9a04
 Revises: 
-Create Date: 2023-01-22 16:57:31.437911
+Create Date: 2023-01-25 12:20:47.388005
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9845085f7dfc'
+revision = 'f5a6ef1f9a04'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,20 +29,24 @@ def upgrade():
     )
     op.create_table('room',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=80), nullable=False),
-    sa.Column('host_sid', sa.String(), nullable=False),
+    sa.Column('room_name', sa.String(length=80), nullable=False),
     sa.Column('private', sa.Boolean(), nullable=False),
-    sa.Column('occupied', sa.Boolean(), nullable=True),
+    sa.Column('host_sid', sa.String(), nullable=False),
+    sa.Column('player_sid', sa.String(), nullable=True),
+    sa.Column('hostURI', sa.String(), nullable=True),
+    sa.Column('playerURI', sa.String(), nullable=True),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('host_sid'),
-    sa.UniqueConstraint('name')
+    sa.UniqueConstraint('player_sid'),
+    sa.UniqueConstraint('room_name')
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=80), nullable=False),
     sa.Column('password', sa.String(length=120), nullable=False),
+    sa.Column('sid', sa.String(length=120), nullable=True),
     sa.Column('avatarUrl', sa.String(length=120), nullable=True),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
