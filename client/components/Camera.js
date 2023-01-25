@@ -14,7 +14,7 @@ export default function CameraApp({ roomID }) {
     const [image, setImage] = useState(null);
     const [base64image, setBase64Image] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [ waiting, isWaiting ] = useState(false)
+    const [waiting, isWaiting] = useState(true)
     const imageRef = useRef();
 
     useEffect(() => {
@@ -57,8 +57,10 @@ export default function CameraApp({ roomID }) {
         const request = async () => {
             let req = await fetch('http://10.129.2.90:5000/postimage', {
                 method: 'POST',
-                headers: { 'Content-type': 'application/json',
-                         'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`},
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                },
                 body: JSON.stringify({
                     id: roomID,
                     uri: base64image
@@ -108,79 +110,79 @@ export default function CameraApp({ roomID }) {
                             marginVertical: 10,
                         }}>
                     </Button>
-                    <Button 
-                        title="Take" 
-                        onPress={() => takePicture()} 
-                        titleStyle={{ fontWeight: '700' }}
-                        buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
-                            borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderRadius: 30,
-                        }}
-                        containerStyle={{
-                            width: 100,
-                            marginHorizontal: 10,
-                            marginVertical: 10,
-                        }}/></>}
+                        <Button
+                            title="Take"
+                            onPress={() => takePicture()}
+                            titleStyle={{ fontWeight: '700' }}
+                            buttonStyle={{
+                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 30,
+                            }}
+                            containerStyle={{
+                                width: 100,
+                                marginHorizontal: 10,
+                                marginVertical: 10,
+                            }} /></>}
                 </View>
                 {image && <>
-                <View ref={imageRef} collapsable={false}>
-                    <Image source={{ uri: image }} style={styles.image} />
-                </View>
-                <View style={styles.buttonList}>
-                    <Button 
-                        title="Clear" 
-                        onPress={() => setImage(null)} 
-                        titleStyle={{ fontWeight: '700' }}
-                        buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
-                            borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderRadius: 30,
-                        }}
-                        containerStyle={{
-                            width: 100,
-                            marginHorizontal: 10,
-                            marginVertical: 10,
-                        }}/>
-                    <Button 
-                        title="Save" 
-                        onPress={() => onSaveImageAsync()} 
-                        titleStyle={{ fontWeight: '700' }}
-                        buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
-                            borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderRadius: 30,
-                        }}
-                        containerStyle={{
-                            width: 100,
-                            marginHorizontal: 10,
-                            marginVertical: 10,
-                        }}/>
-                    <Button 
-                        title="Share" 
-                        onPress={() => shareImage()} 
-                        titleStyle={{ fontWeight: '700' }}
-                        buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
-                            borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderRadius: 30,
-                        }}
-                        containerStyle={{
-                            width: 100,
-                            marginHorizontal: 10,
-                            marginVertical: 10,
-                        }}/>
-                </View>
+                    <View ref={imageRef} collapsable={false}>
+                        <Image source={{ uri: image }} style={styles.image} />
+                    </View>
+                    <View style={styles.buttonList}>
+                        <Button
+                            title="Clear"
+                            onPress={() => setImage(null)}
+                            titleStyle={{ fontWeight: '700' }}
+                            buttonStyle={{
+                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 30,
+                            }}
+                            containerStyle={{
+                                width: 100,
+                                marginHorizontal: 10,
+                                marginVertical: 10,
+                            }} />
+                        <Button
+                            title="Save"
+                            onPress={() => onSaveImageAsync()}
+                            titleStyle={{ fontWeight: '700' }}
+                            buttonStyle={{
+                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 30,
+                            }}
+                            containerStyle={{
+                                width: 100,
+                                marginHorizontal: 10,
+                                marginVertical: 10,
+                            }} />
+                        <Button
+                            title="Share"
+                            onPress={() => shareImage()}
+                            titleStyle={{ fontWeight: '700' }}
+                            buttonStyle={{
+                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 30,
+                            }}
+                            containerStyle={{
+                                width: 100,
+                                marginHorizontal: 10,
+                                marginVertical: 10,
+                            }} />
+                    </View>
                 </>}
-            </View> 
-            : 
-            <View style={styles.container}>
-                <Text>Waiting for other user</Text>
-            </View>}
+            </View>
+                :
+                <View style={styles.container}>
+                    <Text>Waiting for other user</Text>
+                </View>}
         </View>
     );
 }

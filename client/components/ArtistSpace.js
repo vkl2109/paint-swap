@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Image, Text, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import { Button } from '@rneui/themed';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import EmojiSticker from './EmojiSticker.js'
 
 export default function ArtistSpace({ navigation, route }) {
-    const [ newPhoto, setNewPhoto ] = useState(null)
+    const [newPhoto, setNewPhoto] = useState(null)
     const { roomID } = route.params;
     const imageRef = useRef();
+    const pickedEmoji = require('../assets/images/cat.png')
 
     const onSaveImageAsync = async () => {
         try {
@@ -28,7 +31,7 @@ export default function ArtistSpace({ navigation, route }) {
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         const request = async () => {
             let req = await fetch(`http://10.129.2.90:5000/getimage`, {
                 method: 'POST',
@@ -42,34 +45,38 @@ export default function ArtistSpace({ navigation, route }) {
             })
             if (req.ok) {
                 let res = await req.json()
-                const img = "data:image/jpeg;base64," + res
+                const img = "data:image/jpeg;base64," + String(res)
+                console.log(img)
                 setNewPhoto(img)
             }
         }
         request()
-    },[])
+    }, [])
     return (
         <SafeAreaView style={styles.container}>
-            {newPhoto ? 
-                <View ref={imageRef} collapsable={false}>
-                    <Image source={{ uri: newPhoto }} style={styles.image}></Image> 
-                </View>
-                : <Text>No Image</Text>}
-            <Button 
-                title="Save" 
-                onPress={() => onSaveImageAsync()} 
-                titleStyle={{ fontWeight: '700' }}
-                buttonStyle={{
-                    backgroundColor: 'rgba(90, 154, 230, 1)',
-                    borderColor: 'transparent',
-                    borderWidth: 0,
-                    borderRadius: 30,
-                }}
-                containerStyle={{
-                    width: 100,
-                    marginHorizontal: 10,
-                    marginVertical: 10,
-                }}/>
+            <GestureHandlerRootView style={styles.container}>
+                {newPhoto ?
+                    <View ref={imageRef} collapsable={false}>
+                        <Image source={{ uri: newPhoto }} style={styles.image}></Image>
+                        <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+                    </View>
+                    : <Text>No Image</Text>}
+                <Button
+                    title="Save"
+                    onPress={() => onSaveImageAsync()}
+                    titleStyle={{ fontWeight: '700' }}
+                    buttonStyle={{
+                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderRadius: 30,
+                    }}
+                    containerStyle={{
+                        width: 100,
+                        marginHorizontal: 10,
+                        marginVertical: 10,
+                    }} />
+            </GestureHandlerRootView>
         </SafeAreaView>
     )
 }
