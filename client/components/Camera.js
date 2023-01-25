@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button } from '@rneui/themed';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -11,6 +12,7 @@ export default function CameraApp({ roomID }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [image, setImage] = useState(null);
+    const [base64image, setBase64Image] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const imageRef = useRef();
 
@@ -24,7 +26,11 @@ export default function CameraApp({ roomID }) {
     const takePicture = async () => {
         if (camera) {
             const data = await camera.takePictureAsync(null)
-            setImage(data.uri);
+            const base64 = await FileSystem.readAsStringAsync(data.uri, { encoding: 'base64' });
+            setBase64Image(base64)
+            const img = "data:image/jpeg;base64," + base64
+            setImage(img);
+            // console.log(base64)
         }
     }
 
@@ -33,6 +39,7 @@ export default function CameraApp({ roomID }) {
             const localUri = await captureRef(imageRef, {
                 height: 440,
                 quality: 1,
+                // result: 'data-uri'
             });
 
             await MediaLibrary.saveToLibraryAsync(localUri);
@@ -53,7 +60,7 @@ export default function CameraApp({ roomID }) {
                          'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`},
                 body: JSON.stringify({
                     id: roomID,
-                    uri: image
+                    uri: base64image
                 })
             })
             if (req.ok) {

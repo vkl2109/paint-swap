@@ -3,7 +3,6 @@ import Canvas from './Canvas.js'
 import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native'
 import Camera from './Camera.js'
 
-
 export default function PaintRoom({ navigation, route }) {
 
   const { roomID } = route.params;

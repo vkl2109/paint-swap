@@ -46,6 +46,9 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
             console.log(room.message)
             navigation.navigate('PaintRoom', { roomID: room.message });
           });
+          newSocket.on('upload_success', (room) => {
+            navigation.navigate('ArtistSpace', { roomID: room.message })
+          })
           setSocket(newSocket)
           navigation.navigate('LandingPage')
         }
