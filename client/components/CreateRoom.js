@@ -90,7 +90,7 @@ export default function CreateRoom({ navigation, socket, loginData }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#5A5A5A', // '#25292e'
+        backgroundColor: '#F5EA9D', // '#25292e'
         alignItems: 'center',
         justifyContent: 'center'
     },
