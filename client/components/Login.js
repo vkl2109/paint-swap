@@ -18,7 +18,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://172.29.1.114:5000/login", {
+        let req = await fetch("http://10.129.2.90:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -33,7 +33,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
           setLoginData(newUser)
           await AsyncStorage.setItem('token', res.token)
           navigation.navigate('LandingPage')
-          const newSocket = io("http://172.29.1.114:5000", {
+          const newSocket = io("http://10.129.2.90:5000", {
             extraHeaders: {
               Authorization: `Bearer ${res.token}`
             }
@@ -47,11 +47,13 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
             navigation.navigate('PaintRoom', { roomID: room.message });
           });
           setSocket(newSocket)
+          navigation.navigate('LandingPage')
         }
         else {
           setErrorMsg(res.error)
         }
       }
+
       login()
     }
     else {
@@ -67,18 +69,17 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
         let res = await req.json()
         if (req.ok) {
           // setLoginData(res)
+          if (password !== confirmPassword) {
+          }
+          setErrorMsg("check passwords")
         }
-      }
-      if (password !== confirmPassword) {
-        setErrorMsg("check passwords")
-      }
-      else {
-        setErrorMsg('')
-        // signup()
+        else {
+          setErrorMsg('')
+          // signup()
+        }
         // navigation.navigate('LandingPage')
       }
     }
-    navigation.navigate('LandingPage')
   }
 
   const toggleErrorDialog = () => {
@@ -149,6 +150,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -192,4 +194,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   }
-});
+})

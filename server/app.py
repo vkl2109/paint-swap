@@ -62,6 +62,23 @@ def create_user():
     return jsonify(user.toJSON()), 201
 
 
+@app.post('/postimage')
+@jwt_required()
+def postimage():
+    data = request.json
+    room = Room.query.get(data['id'])
+    current_user = User.query.get(get_jwt_identity())
+    if current_user.sid == room.player_sid:
+        room.playerURI = data['uri']
+        print(data['uri'])
+    elif current_user.sid == room.host_sid:
+        room.hostURI = data['uri']
+        print(data['uri'])
+    else:
+        print('session id not found: ' + current_user.sid)
+    db.session.commit()
+    return jsonify(room.toJSON()), 201
+
 @app.post('/rooms/<name>')
 @jwt_required()
 def join_private_room(name):
@@ -86,7 +103,7 @@ def create_room():
 
     current_user = User.query.get(get_jwt_identity())
     host_sid = current_user.sid
-    room = Room(data['name'], data['private'], False, host_sid)
+    room = Room(data['name'], data['private'], host_sid)
     db.session.add(room)
     db.session.commit()
     return jsonify(room.toJSON()), 201
