@@ -68,7 +68,7 @@ def join_private_room(name):
     room = Room.query.filter_by(room_name=name).first()
     current_user = User.query.get(get_jwt_identity())
     room.player_sid = current_user.sid
-    # print(current_user.sid)
+    db.session.commit()
     socketio.emit('join_success', {
         'message': f'{room.id}'}, room=room.host_sid)
     socketio.emit('join_success', {
@@ -92,22 +92,25 @@ def create_room():
     return jsonify(room.toJSON()), 201
 
 
-@app.get('/rooms/<int:id>')
+@app.post('/rooms/<int:id>')
 @jwt_required()
-def join_room(id):
-    # data = request.json
-    # room_id = data.get('room', '')
-    room = Room.query.filter_by(id=id)
-    # if not room_id.isnumeric():
-    #     return '', 400
-    # room = Room.query.get(int(room_id))
-    # user = User.query.get(int(current_user))
-    current_user = get_jwt_identity()
+def join_public_room(id):
+    room = Room.query.filter_by(id=id).first()
+    current_user = User.query.get(get_jwt_identity())
     room.player_sid = current_user.sid
-    socketio.emit('join_success', {
-        'message': f'{room.id}'}, room=current_user.sid)
+    db.session.commit()
     socketio.emit('join_success', {
         'message': f'{room.id}'}, room=room.host_sid)
+    socketio.emit('join_success', {
+        'message': f'{room.id}'}, room=current_user.sid)
+    return jsonify(room.toJSON()), 201
+
+
+@app.get('/rooms')
+def show_rooms():
+    rooms = Room.query.all() or []
+    print(rooms)
+    return jsonify([r.toJSON() for r in rooms])
 
 
 @socketio.on('connect')
@@ -141,4 +144,4 @@ def handle_message(data):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=os.environ.get('PORT', 3001))
+    app.run(host='127.0.0.1', port=os.environ.get('PORT', 3001), debug=True)

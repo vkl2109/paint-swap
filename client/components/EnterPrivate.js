@@ -1,6 +1,7 @@
 import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, TextInput } from 'react-native';
 import { useState, useEffect } from 'react'
 import { Button } from '@rneui/themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function EnterPrivate({ navigation, socket, loginData }) {
@@ -9,23 +10,24 @@ export default function EnterPrivate({ navigation, socket, loginData }) {
 
     const handleSubmit = async () => {
 
-        let req = await fetch(`http://10.129.2.90:5000/rooms/${name}`, {
+        let req = await fetch(`http://172.29.1.114:5000/rooms/${name}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${loginData.token}`
+                'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
             }
         })
         let res = await req.json()
+        console.log(res)
     }
 
 
-    useEffect(() => {
-        socket.on('join_success', (room) => {
-            console.log(room.message)
-            navigation.navigate('PaintRoom', { roomID: room.message });
-        });
-    }, [socket])
+    // useEffect(() => {
+    //     socket.on('join_success', (room) => {
+    //         console.log(room.message)
+    //         navigation.navigate('PaintRoom', { roomID: room.message });
+    //     });
+    // }, [socket])
 
     return (
         <SafeAreaView style={styles.container}>

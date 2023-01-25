@@ -18,7 +18,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://10.129.2.90:5000/login", {
+        let req = await fetch("http://172.29.1.114:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -31,9 +31,9 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
           setErrorMsg('')
           let newUser = { "id": res.user.id, "username": res.user.username, "password": res.user.password, "avatarUrl": res.user.avatarUrl }
           setLoginData(newUser)
-          await AsyncStorage.setItem('token', JSON.stringify(res.token))
+          await AsyncStorage.setItem('token', res.token)
           navigation.navigate('LandingPage')
-          const newSocket = io("http://10.129.2.90:5000", {
+          const newSocket = io("http://172.29.1.114:5000", {
             extraHeaders: {
               Authorization: `Bearer ${res.token}`
             }
@@ -42,6 +42,10 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
           newSocket.on("connect", (data) => {
             console.log(data);
           })
+          newSocket.on('join_success', (room) => {
+            console.log(room.message)
+            navigation.navigate('PaintRoom', { roomID: room.message });
+          });
           setSocket(newSocket)
         }
         else {

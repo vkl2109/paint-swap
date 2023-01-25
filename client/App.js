@@ -16,33 +16,8 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [socket, setSocket] = useState(null)
-  const [ loginData, setLoginData ] = useState({})
+  const [loginData, setLoginData] = useState({})
 
-  // useEffect(() => {
-  //   const newSocket = io("http://10.129.2.90:5000", {
-  //     extraHeaders: {
-  //       Authorization: `Bearer ${localStorage.getItem('token')}`
-  //     }
-  //   })
-
-  //   newSocket.on("connect", (data) => {
-  //     console.log(data);
-  //   })
-
-  //   // socket.on("data", (data) => {
-  //   //   console.log(data);
-  //   // });
-
-  //   // socket.on("disconnect", (data) => {
-  //   //   console.log(data);
-  //   // });
-
-  //   setSocket(newSocket)
-
-  //   return function cleanup() {
-  //     // socket.disconnect()
-  //   }
-  // }, [])
 
 
   return (
@@ -50,12 +25,14 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name='Login' >
-          {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket}/>}
+            {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket} />}
           </Stack.Screen>
           <Stack.Screen name='LandingPage' component={LandingPage} />
-          <Stack.Screen name='ChoosePublic' component={ChoosePublic} />
+          <Stack.Screen name='ChoosePublic'>
+            {props => <ChoosePublic {...props} socket={socket} loginData={loginData} />}
+          </Stack.Screen>
           <Stack.Screen name='CreateRoom'>
-            {props => <CreateRoom {...props} socket={socket} loginData={loginData}/>}
+            {props => <CreateRoom {...props} socket={socket} loginData={loginData} />}
           </Stack.Screen>
           <Stack.Screen name='EnterPrivate'>
             {props => <EnterPrivate {...props} socket={socket} loginData={loginData} />}

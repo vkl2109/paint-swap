@@ -1,40 +1,49 @@
 import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@rneui/themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function ChoosePublic({ navigation }) {
+export default function ChoosePublic({ navigation, loginData, socket }) {
 
     const [rooms, setRooms] = useState([])
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch('http://localhost:3000/rooms')
+            let req = await fetch('http://172.29.1.114:5000/rooms')
             let res = await req.json()
-
-            setRooms(res)
+            const publicRooms = res.filter(room => { return room.player_sid === null && room.private === false })
+            setRooms(publicRooms)
             console.log(rooms)
         }
-    },[])
+
+        request()
+    }, [])
 
 
-    const handleRoom = (room) => {
-        navigation.navigate('PaintRoom', room)
-
-        // socket.on('join_room', (data) => {
-        //     if (data.status === 'success') {
-        //         navigation.navigate('Room', { roomName });
+    const handleRoom = async (id) => {
+        let req = await fetch(`http://172.29.1.114:5000/rooms/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+            }
+        })
+        console.log(await AsyncStorage.getItem('token'))
+        let res = await req.json()
+        console.log(res)
     }
-
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
                 <Text style={styles.buttonLabel}>Enter a Public Room</Text>
-                <FlatList data={rooms} renderItem={({ room }) => (
-                    <TouchableOpacity onPress={() => { handleRoom(room) }}>
-                        <Text>Room: {room.name}</Text>
-                    </TouchableOpacity>
-                )} />
+                {
+                    rooms.map((room, i) => (
+                        <TouchableOpacity key={`room-${i}`} onPress={() => { handleRoom(room.id) }} style={styles.appButtonContainer}>
+                            <Text style={styles.appButtonText}>Room: {room.room_name}</Text>
+                        </TouchableOpacity>
+                    ))
+                }
             </View>
         </SafeAreaView>
     );
@@ -71,4 +80,20 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor: "#009688",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        margin: 5,
+        width: '80%'
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
 });
