@@ -6,6 +6,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { Button } from '@rneui/themed';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import EmojiSticker from './EmojiSticker.js'
+import * as FileSystem from 'expo-file-system';
 
 export default function ArtistSpace({ navigation, route }) {
     const [newPhoto, setNewPhoto] = useState(null)
@@ -23,7 +24,9 @@ export default function ArtistSpace({ navigation, route }) {
 
             await MediaLibrary.saveToLibraryAsync(localUri);
             if (localUri) {
-                console.log(localUri)
+                const base64 = await FileSystem.readAsStringAsync(localUri, { encoding: 'base64' });
+                const img = "data:image/jpeg;base64," + base64
+                setNewPhoto(img);
                 alert("Saved!");
             }
         } catch (e) {
@@ -33,7 +36,7 @@ export default function ArtistSpace({ navigation, route }) {
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch(`http://172.29.1.114:5000/getimage`, {
+            let req = await fetch(`http://10.129.2.90:5000/getimage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -71,12 +71,14 @@ def postimage():
     if current_user.sid == room.player_sid:
         room.playerURI = data['uri']
         print(data['uri'])
+        room.playerBool = not room.playerBool
     elif current_user.sid == room.host_sid:
         room.hostURI = data['uri']
         print(data['uri'])
+        room.hostBool = not room.hostBool
     else:
         print('session id not found: ' + current_user.sid)
-    if room.hostURI != '' and room.playerURI != '':
+    if room.hostBool == room.playerBool:
         socketio.emit('upload_success', {
             'message': f'{room.id}'}, room=room.host_sid)
         socketio.emit('upload_success', {

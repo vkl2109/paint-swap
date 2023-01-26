@@ -5,16 +5,12 @@ import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function CameraApp({ roomID }) {
+export default function CameraApp({ image, setImage, base64image, setBase64Image, waiting, shareImage }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [camera, setCamera] = useState(null);
-    const [image, setImage] = useState(null);
-    const [base64image, setBase64Image] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [waiting, isWaiting] = useState(true)
     const imageRef = useRef();
 
     useEffect(() => {
@@ -53,29 +49,8 @@ export default function CameraApp({ roomID }) {
         }
     };
 
-    const shareImage = () => {
-        const request = async () => {
-            let req = await fetch('http://172.29.1.114:5000/postimage', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    id: roomID,
-                    uri: base64image
-                })
-            })
-            if (req.ok) {
-                setImage(null)
-                isWaiting(false)
-            }
-        }
-        request()
-    }
-
     if (hasCameraPermission === false) {
-        return <Text>No access to camera</Text>;
+        alert("No Access to Camera");
     }
     return (
         <View style={styles.container}>

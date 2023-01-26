@@ -23,7 +23,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Login' >
             {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket} />}
           </Stack.Screen>

@@ -40,6 +40,8 @@ class Room(db.Model):
     player_sid = db.Column(db.String, unique=True)
     hostURI = db.Column(db.String)
     playerURI = db.Column(db.String)
+    hostBool = db.Column(db.Boolean)
+    playerBool = db.Column(db.Boolean)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(
         db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
@@ -47,13 +49,15 @@ class Room(db.Model):
     def toJSON(self):
         return {"id": self.id, "room_name": self.room_name, "private": self.private, "host_sid": self.host_sid, "player_sid": self.player_sid}
 
-    def __init__(self, room_name, private, host_sid='', player_sid=None, hostURI='', playerURI=''):
+    def __init__(self, room_name, private, host_sid='', player_sid=None, hostURI='', playerURI='', hostBool=False, playerBool=False):
         self.room_name = room_name
         self.private = private
         self.host_sid = host_sid
         self.player_sid = player_sid
         self.hostURI = hostURI
         self.playerURI = playerURI
+        self.hostBool = hostBool
+        self.playerBool = playerBool
 
     def __repr__(self):
         return '<Room %r>' % self.room_name
