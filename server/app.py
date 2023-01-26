@@ -70,21 +70,24 @@ def postimage():
     current_user = User.query.get(get_jwt_identity())
     if current_user.sid == room.player_sid:
         room.playerURI = data['uri']
-        print(data['uri'])
+        # print(data['uri'])
         room.playerBool = not room.playerBool
+        db.session.commit()
     elif current_user.sid == room.host_sid:
         room.hostURI = data['uri']
         print(data['uri'])
         room.hostBool = not room.hostBool
+        db.session.commit()
     else:
         print('session id not found: ' + current_user.sid)
     if room.hostBool == room.playerBool:
         socketio.emit('upload_success', {
             'message': f'{room.id}'}, room=room.host_sid)
         socketio.emit('upload_success', {
-            'message': f'{room.id}'}, room=current_user.sid)
+            'message': f'{room.id}'}, room=room.player_sid)
+        return {"message":"refresh"}, 201
     db.session.commit()
-    return jsonify(room.toJSON()), 201
+    return {"message":"don't refresh"}, 201
 
 
 @app.post('/getimage')

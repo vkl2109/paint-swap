@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 
-export default function Login({ navigation, loginData, setLoginData, setSocket }) {
+export default function Login({ navigation, loginData, setLoginData, setSocket, setToggle }) {
   const [username, onChangeUserName] = useState('')
   const [password, onChangePassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
@@ -48,6 +48,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
             navigation.navigate('PaintRoom', { roomID: room.message });
           });
           newSocket.on('upload_success', (room) => {
+            setToggle(toggle => !toggle)
             navigation.navigate('ArtistSpace', { roomID: room.message })
           })
           setSocket(newSocket)
