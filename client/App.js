@@ -19,13 +19,6 @@ export default function App() {
   const [socket, setSocket] = useState(null)
   const [loginData, setLoginData] = useState({})
 
-  RNFetchBlob.fs.ls(imagesFolder)
-    .then((files) => {
-      console.log(files);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
 
   return (
     <SafeAreaProvider>
