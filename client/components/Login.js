@@ -7,6 +7,12 @@ import { io } from "socket.io-client";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
+const testFolder = './assets/images';
+const fs = require('fs');
+fs.readdirSync(testFolder).forEach(file => {
+  console.log(file);
+});
+
 export default function Login({ navigation, loginData, setLoginData, setSocket }) {
   const [username, onChangeUserName] = useState('')
   const [password, onChangePassword] = useState('')
@@ -18,7 +24,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://10.129.2.90:5000/login", {
+        let req = await fetch("http://172.29.1.114:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -33,7 +39,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
           setLoginData(newUser)
           await AsyncStorage.setItem('token', res.token)
           navigation.navigate('LandingPage')
-          const newSocket = io("http://10.129.2.90:5000", {
+          const newSocket = io("http://172.29.1.114:5000", {
             extraHeaders: {
               Authorization: `Bearer ${res.token}`
             }
@@ -61,7 +67,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket }
     }
     else {
       const signup = async () => {
-        let req = await fetch("http://10.129.2.90:5000/users", {
+        let req = await fetch("http://172.29.1.114:5000/users", {
           method: "POST",
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({

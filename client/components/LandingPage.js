@@ -7,50 +7,50 @@ export default function LandingPage({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={styles.buttonList}>
           <Button
-              title="Create Room"
-              buttonStyle={{
-                backgroundColor: 'rgba(111, 202, 186, 1)',
-                borderRadius: 5,
-              }}
-              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-              containerStyle={{
-                marginHorizontal: 50,
-                height: 50,
-                width: 200,
-                marginVertical: 20,
-              }}
-              onPress={() => navigation.navigate('CreateRoom')}
-            />
+            title="Create Room"
+            buttonStyle={{
+              backgroundColor: 'rgba(111, 202, 186, 1)',
+              borderRadius: 5,
+            }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            containerStyle={{
+              marginHorizontal: 50,
+              height: 50,
+              width: 200,
+              marginVertical: 20,
+            }}
+            onPress={() => navigation.navigate('CreateRoom')}
+          />
           <Button
-              title="Enter A Room"
-              buttonStyle={{
-                backgroundColor: 'rgba(111, 202, 186, 1)',
-                borderRadius: 5,
-              }}
-              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-              containerStyle={{
-                marginHorizontal: 50,
-                height: 50,
-                width: 200,
-                marginVertical: 20,
-              }}
-              onPress={() => navigation.navigate('EnterPrivate')}
-            />
+            title="Enter A Room"
+            buttonStyle={{
+              backgroundColor: 'rgba(111, 202, 186, 1)',
+              borderRadius: 5,
+            }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            containerStyle={{
+              marginHorizontal: 50,
+              height: 50,
+              width: 200,
+              marginVertical: 20,
+            }}
+            onPress={() => navigation.navigate('EnterPrivate')}
+          />
           <Button
-              title="Choose Public"
-              buttonStyle={{
-                backgroundColor: 'rgba(111, 202, 186, 1)',
-                borderRadius: 5,
-              }}
-              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-              containerStyle={{
-                marginHorizontal: 50,
-                height: 50,
-                width: 200,
-                marginVertical: 20,
-              }}
-              onPress={() => navigation.navigate('ChoosePublic')}
-            />
+            title="Choose Public"
+            buttonStyle={{
+              backgroundColor: 'rgba(111, 202, 186, 1)',
+              borderRadius: 5,
+            }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            containerStyle={{
+              marginHorizontal: 50,
+              height: 50,
+              width: 200,
+              marginVertical: 20,
+            }}
+            onPress={() => navigation.navigate('ChoosePublic')}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

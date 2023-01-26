@@ -33,7 +33,7 @@ export default function ArtistSpace({ navigation, route }) {
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch(`http://10.129.2.90:5000/getimage`, {
+            let req = await fetch(`http://172.29.1.114:5000/getimage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

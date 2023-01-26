@@ -30,7 +30,8 @@
     "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.9",
     "react-native-webview": "11.23.1",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.5.4",
+    "expo-image-picker": "~14.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

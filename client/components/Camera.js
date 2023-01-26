@@ -55,7 +55,7 @@ export default function CameraApp({ roomID }) {
 
     const shareImage = () => {
         const request = async () => {
-            let req = await fetch('http://10.129.2.90:5000/postimage', {
+            let req = await fetch('http://172.29.1.114:5000/postimage', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
