@@ -7,11 +7,6 @@ import { io } from "socket.io-client";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
-const testFolder = './assets/images';
-const fs = require('fs');
-fs.readdirSync(testFolder).forEach(file => {
-  console.log(file);
-});
 
 export default function Login({ navigation, loginData, setLoginData, setSocket }) {
   const [username, onChangeUserName] = useState('')
