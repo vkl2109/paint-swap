@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
 
 
-export default function Login({ navigation, loginData, setLoginData, setSocket, setToggle }) {
+export default function Login({ navigation, loginData, setLoginData, setSocket, setToggle, setLeaveMsg }) {
   const [username, onChangeUserName] = useState('')
   const [password, onChangePassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
