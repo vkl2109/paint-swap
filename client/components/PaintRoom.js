@@ -12,12 +12,12 @@ export default function PaintRoom({ navigation, route }) {
   const [base64image, setBase64Image] = useState(null);
   const [waiting, isWaiting] = useState(true)
   const { roomID } = route.params;
-  const [ visible, setVisible ] = useState(true)
+  const [visible, setVisible] = useState(true)
   // not sure if this is the right way to pass the room param 
 
   const shareImage = () => {
     const request = async () => {
-      let req = await fetch('http://10.129.2.90:5000/postimage', {
+      let req = await fetch('http://172.29.1.114:5000/postimage', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -39,51 +39,51 @@ export default function PaintRoom({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        {visible ? 
+        {visible ?
           (<View style={styles.buttonList}>
-              <Button
-                title="Take a Photo"
-                buttonStyle={{
-                  backgroundColor: 'rgba(111, 202, 186, 1)',
-                  borderRadius: 5,
-                }}
-                titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-                containerStyle={{
-                  marginHorizontal: 50,
-                  height: 50,
-                  width: 200,
-                  marginVertical: 20,
-                }}
-                onPress={() => {
-                  setCamera(true)
-                  setVisible(false)
-                }}
-              />
-              <Button
-                title="Choose from Album"
-                buttonStyle={{
-                  backgroundColor: 'rgba(111, 202, 186, 1)',
-                  borderRadius: 5,
-                }}
-                titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-                containerStyle={{
-                  marginHorizontal: 50,
-                  height: 50,
-                  width: 200,
-                  marginVertical: 20,
-                }}
-                onPress={() => {
-                  setCamera(false)
-                  setVisible(false)
-                }}
-              />
-          </View>) 
-          : 
+            <Button
+              title="Take a Photo"
+              buttonStyle={{
+                backgroundColor: 'rgba(111, 202, 186, 1)',
+                borderRadius: 5,
+              }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              containerStyle={{
+                marginHorizontal: 50,
+                height: 50,
+                width: 200,
+                marginVertical: 20,
+              }}
+              onPress={() => {
+                setCamera(true)
+                setVisible(false)
+              }}
+            />
+            <Button
+              title="Choose from Album"
+              buttonStyle={{
+                backgroundColor: 'rgba(111, 202, 186, 1)',
+                borderRadius: 5,
+              }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              containerStyle={{
+                marginHorizontal: 50,
+                height: 50,
+                width: 200,
+                marginVertical: 20,
+              }}
+              onPress={() => {
+                setCamera(false)
+                setVisible(false)
+              }}
+            />
+          </View>)
+          :
           (<View style={styles.container}>
             {camera ?
-              (<Camera style={styles.container} shareImage={shareImage} image={image} setImage={setImage} base64image={base64image} setBase64Image={setBase64Image} waiting={waiting}/>)
+              (<Camera style={styles.container} shareImage={shareImage} image={image} setImage={setImage} base64image={base64image} setBase64Image={setBase64Image} waiting={waiting} />)
               :
-              (<SharePhoto style={styles.container} shareImage={shareImage} image={image} setImage={setImage} base64image={base64image} setBase64Image={setBase64Image} waiting={waiting}/>)
+              (<SharePhoto style={styles.container} shareImage={shareImage} image={image} setImage={setImage} base64image={base64image} setBase64Image={setBase64Image} waiting={waiting} />)
             }
           </View>)}
       </View>

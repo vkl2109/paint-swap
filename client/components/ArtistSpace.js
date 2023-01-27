@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image } from 'react-native'
+import { SafeAreaView, FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
@@ -7,6 +7,7 @@ import { Button } from '@rneui/themed';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import EmojiSticker from './EmojiSticker.js'
 import * as FileSystem from 'expo-file-system';
+import Emojis from './Emojis.js';
 
 export default function ArtistSpace({ navigation, route, toggle, setToggle, leaveMsg }) {
     const [newPhoto, setNewPhoto] = useState(null)
@@ -14,7 +15,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
     const [waiting, isWaiting] = useState(true)
     const { roomID } = route.params;
     const imageRef = useRef();
-    const pickedEmoji = require('../assets/images/cat.png')
+    const [emojis, setEmojis] = useState([])
 
     const onSaveImageAsync = async () => {
         try {
@@ -39,7 +40,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
 
     const shareImage = () => {
         const request = async () => {
-            let req = await fetch('http://10.129.2.90:5000/postimage', {
+            let req = await fetch('http://172.29.1.114:5000/postimage', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -64,7 +65,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch(`http://10.129.2.90:5000/getimage`, {
+            let req = await fetch(`http://172.29.1.114:5000/getimage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
     // }
 
     const leaveRoom = async () => {
-        let req = await fetch(`http://10.129.2.90:5000/leaveroom`, {
+        let req = await fetch(`http://172.29.1.114:5000/leaveroom`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,6 +105,19 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
     }
 
 
+    const selectEmoji = (item) => {
+        setEmojis(prevState => [item, ...prevState])
+    }
+
+    const renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={{ marginTop: 11, height: 150 }} onPress={() => { selectEmoji(item) }}>
+                <Image style={{ width: 100, height: 100 }} resizeMode='contain' source={require(item)} />
+            </TouchableOpacity>
+        )
+    }
+
+
     return (
         <SafeAreaView style={styles.container}>
             <GestureHandlerRootView style={styles.container}>
@@ -113,7 +127,13 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                             {newPhoto ?
                                 <View style={styles.imageContainer} ref={imageRef} collapsable={false}>
                                     <Image source={{ uri: newPhoto }} style={styles.image}></Image>
-                                    <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+                                    {
+                                        emojis.map((emoji) => {
+                                            return (
+                                                <EmojiSticker imageSize={40} stickerSource={require(emoji)} />
+                                            )
+                                        })
+                                    }
                                 </View>
                                 : <Text>No Image</Text>}
                             <View style={styles.buttonList}>
@@ -163,6 +183,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                                         marginVertical: 0,
                                     }} />
                             </View>
+                            <FlatList data={Emojis} horizontal renderItem={renderItem} keyExtractor={(item, index) => index.toString()} />
                         </View>
                         :
                         <View style={styles.container}>
