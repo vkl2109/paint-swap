@@ -8,10 +8,10 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import EmojiSticker from './EmojiSticker.js'
 import * as FileSystem from 'expo-file-system';
 
-export default function ArtistSpace({ navigation, route, toggle, setToggle }) {
-    const [newPhoto, setNewPhoto] = useState(null) 
-    const [ base64Image, setBase64Image ] = useState()
-    const [ waiting, isWaiting ] = useState(true)
+export default function ArtistSpace({ navigation, route, toggle, setToggle, leaveMsg }) {
+    const [newPhoto, setNewPhoto] = useState(null)
+    const [base64Image, setBase64Image] = useState()
+    const [waiting, isWaiting] = useState(true)
     const { roomID } = route.params;
     const imageRef = useRef();
     const pickedEmoji = require('../assets/images/cat.png')
@@ -38,28 +38,28 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle }) {
     };
 
     const shareImage = () => {
-    const request = async () => {
-        let req = await fetch('http://10.129.2.90:5000/postimage', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                id: roomID,
-                uri: base64Image
+        const request = async () => {
+            let req = await fetch('http://10.129.2.90:5000/postimage', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    id: roomID,
+                    uri: base64Image
+                })
             })
-        })
-        if (req.ok) {
-            setNewPhoto(null)
-            isWaiting(false)
-            let res = await req.json()
-            if (res.message == 'refresh') {
-                setToggle(toggle => !toggle)
+            if (req.ok) {
+                setNewPhoto(null)
+                isWaiting(false)
+                let res = await req.json()
+                if (res.message == 'refresh') {
+                    setToggle(toggle => !toggle)
+                }
             }
         }
-    }
-    request()
+        request()
     }
 
     useEffect(() => {
@@ -84,70 +84,95 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle }) {
         request()
         isWaiting(true)
     }, [toggle])
+
+    // const leaveRoom = () => {
+    //     navigation.navigate('LandingPage')
+    // }
+
+    const leaveRoom = async () => {
+        let req = await fetch(`http://10.129.2.90:5000/leaveroom`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                id: roomID
+            })
+        })
+        navigation.navigate('LandingPage')
+    }
+
+
     return (
         <SafeAreaView style={styles.container}>
             <GestureHandlerRootView style={styles.container}>
                 <View style={styles.container}>
                     {waiting ?
-                    <View style={styles.container}>
-                        {newPhoto ?
-                            <View style={styles.imageContainer} ref={imageRef} collapsable={false}>
-                                <Image source={{ uri: newPhoto }} style={styles.image}></Image>
-                                <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+                        <View style={styles.container}>
+                            {newPhoto ?
+                                <View style={styles.imageContainer} ref={imageRef} collapsable={false}>
+                                    <Image source={{ uri: newPhoto }} style={styles.image}></Image>
+                                    <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+                                </View>
+                                : <Text>No Image</Text>}
+                            <View style={styles.buttonList}>
+                                <Button
+                                    title="Save"
+                                    onPress={() => onSaveImageAsync()}
+                                    titleStyle={{ fontWeight: '700' }}
+                                    buttonStyle={{
+                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        borderColor: 'transparent',
+                                        borderWidth: 0,
+                                        borderRadius: 30,
+                                    }}
+                                    containerStyle={{
+                                        width: 100,
+                                        marginHorizontal: 10,
+                                        marginVertical: 0,
+                                    }} />
+                                <Button
+                                    title="Switch"
+                                    onPress={() => shareImage()}
+                                    titleStyle={{ fontWeight: '700' }}
+                                    buttonStyle={{
+                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        borderColor: 'transparent',
+                                        borderWidth: 0,
+                                        borderRadius: 30,
+                                    }}
+                                    containerStyle={{
+                                        width: 100,
+                                        marginHorizontal: 10,
+                                        marginVertical: 0,
+                                    }} />
+                                <Button
+                                    title="Leave Room"
+                                    onPress={() => leaveRoom()}
+                                    titleStyle={{ fontWeight: '700' }}
+                                    buttonStyle={{
+                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        borderColor: 'transparent',
+                                        borderWidth: 0,
+                                        borderRadius: 30,
+                                    }}
+                                    containerStyle={{
+                                        width: 100,
+                                        marginHorizontal: 10,
+                                        marginVertical: 0,
+                                    }} />
                             </View>
-                            : <Text>No Image</Text>}
-                        <View style={styles.buttonList}>
-                            <Button
-                                title="Save"
-                                onPress={() => onSaveImageAsync()}
-                                titleStyle={{ fontWeight: '700' }}
-                                buttonStyle={{
-                                    backgroundColor: 'rgba(90, 154, 230, 1)',
-                                    borderColor: 'transparent',
-                                    borderWidth: 0,
-                                    borderRadius: 30,
-                                }}
-                                containerStyle={{
-                                    width: 100,
-                                    marginHorizontal: 10,
-                                    marginVertical: 0,
-                                }} />
-                            <Button
-                                title="Switch"
-                                onPress={() => shareImage()}
-                                titleStyle={{ fontWeight: '700' }}
-                                buttonStyle={{
-                                    backgroundColor: 'rgba(90, 154, 230, 1)',
-                                    borderColor: 'transparent',
-                                    borderWidth: 0,
-                                    borderRadius: 30,
-                                }}
-                                containerStyle={{
-                                    width: 100,
-                                    marginHorizontal: 10,
-                                    marginVertical: 0,
-                                }} />
-                            <Button
-                                title="Return"
-                                onPress={() => navigation.navigate('LandingPage')}
-                                titleStyle={{ fontWeight: '700' }}
-                                buttonStyle={{
-                                    backgroundColor: 'rgba(90, 154, 230, 1)',
-                                    borderColor: 'transparent',
-                                    borderWidth: 0,
-                                    borderRadius: 30,
-                                }}
-                                containerStyle={{
-                                    width: 100,
-                                    marginHorizontal: 10,
-                                    marginVertical: 0,
-                                }} />
                         </View>
-                    </View>
-                    :
-                    <View style={styles.container}>
-                        <Text>Waiting for other user</Text>
-                    </View>}
+                        :
+                        <View style={styles.container}>
+                            <Text>Waiting for other user</Text>
+                        </View>}
+                    {leaveMsg &&
+                        <View>
+                            <Text>The other user left</Text>
+                        </View>
+                    }
                 </View>
             </GestureHandlerRootView>
         </SafeAreaView>

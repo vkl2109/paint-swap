@@ -22,13 +22,6 @@ export default function EnterPrivate({ navigation, socket, loginData }) {
     }
 
 
-    // useEffect(() => {
-    //     socket.on('join_success', (room) => {
-    //         console.log(room.message)
-    //         navigation.navigate('PaintRoom', { roomID: room.message });
-    //     });
-    // }, [socket])
-
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>

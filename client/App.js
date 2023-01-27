@@ -18,7 +18,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [socket, setSocket] = useState(null)
   const [loginData, setLoginData] = useState({})
-  const [ toggle, setToggle ] = useState(false)
+  const [toggle, setToggle] = useState(false)
+  const [leaveMsg, setLeaveMsg] = useState(false)
 
 
   return (
@@ -26,7 +27,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Login' >
-            {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket} setToggle={setToggle}/>}
+            {props => <Login {...props} loginData={loginData} setLoginData={setLoginData} setSocket={setSocket} setToggle={setToggle} setLeaveMsg={setLeaveMsg} />}
           </Stack.Screen>
           <Stack.Screen name='LandingPage' component={LandingPage} />
           <Stack.Screen name='ChoosePublic'>
@@ -40,7 +41,7 @@ export default function App() {
           </Stack.Screen>
           <Stack.Screen name='PaintRoom' component={PaintRoom} />
           <Stack.Screen name='ArtistSpace'>
-            {props => <ArtistSpace {...props} socket={socket} toggle={toggle} setToggle={setToggle}/>}
+            {props => <ArtistSpace {...props} socket={socket} toggle={toggle} setToggle={setToggle} leaveMsg={leaveMsg} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

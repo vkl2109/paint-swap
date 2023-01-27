@@ -16,6 +16,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
   const [errorDialog, setErrorDialog] = useState(false)
   const [loginState, setLoginState] = useState(true)
 
+
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
@@ -50,6 +51,10 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
           newSocket.on('upload_success', (room) => {
             setToggle(toggle => !toggle)
             navigation.navigate('ArtistSpace', { roomID: room.message })
+          })
+          newSocket.on("leave_room", (data) => {
+            console.log(data);
+            setLeaveMsg(true)
           })
           setSocket(newSocket)
           navigation.navigate('LandingPage')

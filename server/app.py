@@ -85,9 +85,27 @@ def postimage():
             'message': f'{room.id}'}, room=room.host_sid)
         socketio.emit('upload_success', {
             'message': f'{room.id}'}, room=room.player_sid)
-        return {"message":"refresh"}, 201
+        return {"message": "refresh"}, 201
     db.session.commit()
-    return {"message":"don't refresh"}, 201
+    return {"message": "don't refresh"}, 201
+
+
+@app.post('/leaveroom')
+@jwt_required()
+def leaveroom():
+    data = request.json
+    room = Room.query.get(data['id'])
+    current_user = User.query.get(get_jwt_identity())
+    if current_user.sid == room.player_sid:
+        socketio.emit('leave_room', {
+            'data': 'socket message sent to the other user'}, room=room.host_sid)
+        return {"message": "left room"}, 201
+    elif current_user.sid == room.host_sid:
+        socketio.emit('leave_room', {
+            'data': 'socket message sent to the other user'}, room=room.player.sid)
+        return {"message": "left room"}, 201
+    else:
+        return {'error': 'something went wrong'}, 404
 
 
 @app.post('/getimage')
@@ -101,8 +119,8 @@ def getimage():
     elif current_user.sid == room.host_sid:
         return jsonify(room.playerURI), 201
     else:
-        return { 'error':'no ID found'}, 404
-    
+        return {'error': 'no ID found'}, 404
+
 
 @app.post('/rooms/<name>')
 @jwt_required()
