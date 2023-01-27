@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PlaceholderImage = require('../assets/images/background-image.png');
+const PicSwapLogo = require('../assets/pic-swap-logo.png');
 
 
 export default function Login({ navigation, loginData, setLoginData, setSocket, setToggle, setLeaveMsg }) {
@@ -107,6 +108,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.headerContainer}>
+          <Image source={PicSwapLogo} style={styles.image} />
           <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
           <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
           {!loginState && <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}

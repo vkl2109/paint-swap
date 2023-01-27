@@ -1,11 +1,14 @@
 import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text } from 'react-native';
 import { Button } from '@rneui/themed';
 
+const PicSwapLogo = require('../assets/pic-swap-logo.png');
+
 export default function LandingPage({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={styles.buttonList}>
+          <Image source={PicSwapLogo} style={styles.image} />
           <Button
             title="Create Room"
             buttonStyle={{
@@ -75,4 +78,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  image: {
+    width: 320,
+    height: 300,
+    borderRadius: 18,
+  }
 });
