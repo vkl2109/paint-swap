@@ -40,24 +40,39 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
 
     const shareImage = () => {
         const request = async () => {
-            let req = await fetch('http://172.29.1.114:5000/postimage', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    id: roomID,
-                    uri: base64Image
-                })
-            })
-            if (req.ok) {
-                setNewPhoto(null)
-                isWaiting(false)
-                let res = await req.json()
-                if (res.message == 'refresh') {
-                    setToggle(toggle => !toggle)
+            try {
+                const localUri = await captureRef(imageRef, {
+                    height: 440,
+                    quality: 1,
+                    // result: 'data-uri'
+                });
+                if (localUri) {
+                    const base64 = await FileSystem.readAsStringAsync(localUri, { encoding: 'base64' });
+                    setBase64Image(base64)
+                    const img = "data:image/jpeg;base64," + base64
+                    setNewPhoto(img);
+                    let req = await fetch('http://10.129.2.90:5000/postimage', {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({
+                            id: roomID,
+                            uri: base64
+                        })
+                    })
+                    if (req.ok) {
+                        setNewPhoto(null)
+                        isWaiting(false)
+                        let res = await req.json()
+                        if (res.message == 'refresh') {
+                            setToggle(toggle => !toggle)
+                        }
+                    }
                 }
+            } catch (e) {
+                console.log(e);
             }
         }
         request()
@@ -65,7 +80,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch(`http://172.29.1.114:5000/getimage`, {
+            let req = await fetch(`http://10.129.2.90:5000/getimage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,6 +99,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
         }
         request()
         isWaiting(true)
+        setEmojis([])
     }, [toggle])
 
     // const leaveRoom = () => {
@@ -91,7 +107,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
     // }
 
     const leaveRoom = async () => {
-        let req = await fetch(`http://172.29.1.114:5000/leaveroom`, {
+        let req = await fetch(`http://10.129.2.90:5000/leaveroom`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -101,18 +117,20 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                 id: roomID
             })
         })
-        navigation.navigate('LandingPage')
+        if (req.ok) {
+            navigation.navigate('LandingPage')
+        }
     }
 
 
     const selectEmoji = (item) => {
-        setEmojis(prevState => [item, ...prevState])
+        setEmojis(prevState => [...prevState, item])
     }
 
-    const renderItem = ({ item }) => {
+    renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={{ marginTop: 11, height: 150 }} onPress={() => { selectEmoji(item) }}>
-                <Image style={{ width: 100, height: 100 }} resizeMode='contain' source={require(item)} />
+            <TouchableOpacity style={{ marginTop: 0, height: 10 }} onPress={() => { selectEmoji(item) }}>
+                <Image style={{ width: 100, height: 100 }} resizeMode='contain' source={item} />
             </TouchableOpacity>
         )
     }
@@ -124,16 +142,22 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                 <View style={styles.container}>
                     {waiting ?
                         <View style={styles.container}>
+                            <View style={styles.list}> 
+                                <FlatList data={Emojis} horizontal renderItem={renderItem} keyExtractor={(item, index) => index.toString()} />
+                            </View>
                             {newPhoto ?
                                 <View style={styles.imageContainer} ref={imageRef} collapsable={false}>
                                     <Image source={{ uri: newPhoto }} style={styles.image}></Image>
+                                    <View style={styles.emojiList}> 
                                     {
-                                        emojis.map((emoji) => {
+                                        emojis.map((emoji, index) => {
+                                            // console.log(emoji) 
                                             return (
-                                                <EmojiSticker imageSize={40} stickerSource={require(emoji)} />
-                                            )
-                                        })
-                                    }
+                                                <EmojiSticker style={styles.emoji} key={index} imageSize={40} stickerSource={emoji} />
+                                                )
+                                            })
+                                        }
+                                    </View>
                                 </View>
                                 : <Text>No Image</Text>}
                             <View style={styles.buttonList}>
@@ -142,7 +166,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                                     onPress={() => onSaveImageAsync()}
                                     titleStyle={{ fontWeight: '700' }}
                                     buttonStyle={{
-                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        backgroundColor: '#369F8E',
                                         borderColor: 'transparent',
                                         borderWidth: 0,
                                         borderRadius: 30,
@@ -152,12 +176,12 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                                         marginHorizontal: 10,
                                         marginVertical: 0,
                                     }} />
-                                <Button
-                                    title="Switch"
+                                {!leaveMsg && <Button
+                                    title="Swap"
                                     onPress={() => shareImage()}
                                     titleStyle={{ fontWeight: '700' }}
                                     buttonStyle={{
-                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        backgroundColor: '#FFA500',
                                         borderColor: 'transparent',
                                         borderWidth: 0,
                                         borderRadius: 30,
@@ -166,13 +190,13 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                                         width: 100,
                                         marginHorizontal: 10,
                                         marginVertical: 0,
-                                    }} />
+                                    }} />}
                                 <Button
-                                    title="Leave Room"
+                                    title="Leave"
                                     onPress={() => leaveRoom()}
                                     titleStyle={{ fontWeight: '700' }}
                                     buttonStyle={{
-                                        backgroundColor: 'rgba(90, 154, 230, 1)',
+                                        backgroundColor: '#FF0000',
                                         borderColor: 'transparent',
                                         borderWidth: 0,
                                         borderRadius: 30,
@@ -183,7 +207,6 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                                         marginVertical: 0,
                                     }} />
                             </View>
-                            <FlatList data={Emojis} horizontal renderItem={renderItem} keyExtractor={(item, index) => index.toString()} />
                         </View>
                         :
                         <View style={styles.container}>
@@ -191,7 +214,7 @@ export default function ArtistSpace({ navigation, route, toggle, setToggle, leav
                         </View>}
                     {leaveMsg &&
                         <View>
-                            <Text>The other user left</Text>
+                            <Text style={styles.message}>The other user left</Text>
                         </View>
                     }
                 </View>
@@ -205,19 +228,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5EA9D', // '#25292e'
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignSelf: 'center',
+        // backgroundColor: '#25292e',
+    },
+    list: {
+        maxHeight: 100
     },
     imageContainer: {
-        flex: -1,
+        // flex: -1,
         height: 300,
         width: 300,
         marginVertical: 20,
-        backgroundColor: '#25292e',
+        // backgroundColor: '#25292e',
         alignItems: 'center',
         justifyContent: 'center'
     },
     buttonList: {
-        flex: -1,
+        // flex: -1,
         flexDirection: 'row',
         justifyContent: 'center',
         // backgroundColor: '#25292e',
@@ -225,9 +253,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
+        position: 'absolute',
         height: 300,
         width: 300,
         // backgroundColor: '#25292e',
         alignSelf: 'center'
     },
+    emoji: {
+        // position: 'absolute',
+        // zIndex: 100
+    },
+    emojiList: {
+        flexDirection: 'row',
+        position: 'absolute'
+    },
+    message: {
+        marginBottom: 30
+    }
 });

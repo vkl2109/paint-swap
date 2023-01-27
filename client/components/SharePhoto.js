@@ -57,11 +57,26 @@ export default function SharePhoto({ image, setImage, base64image, setBase64Imag
                     </View>
                     <View style={styles.buttonList}>
                         <Button
-                            title="Share"
+                            title="Choose"
+                            onPress={() => pickImage()}
+                            titleStyle={{ fontWeight: '700' }}
+                            buttonStyle={{
+                                backgroundColor: '#369F8E',
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 30,
+                            }}
+                            containerStyle={{
+                                width: 100,
+                                marginHorizontal: 10,
+                                marginVertical: 10,
+                            }} />
+                        <Button
+                            title="Swap"
                             onPress={() => shareImage()}
                             titleStyle={{ fontWeight: '700' }}
                             buttonStyle={{
-                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                backgroundColor: '#FFA500',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 30,
@@ -76,7 +91,7 @@ export default function SharePhoto({ image, setImage, base64image, setBase64Imag
             </View>
             :
             <View style={styles.container}>
-                <Text>Waiting for other user</Text>
+                <Text style={styles.message}>Waiting for other user</Text>
             </View>}
         </View>
     );
@@ -101,11 +116,15 @@ const styles = StyleSheet.create({
     image: {
         height: 300,
         width: 300,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        backgroundColor: 'transparent'
     },
     buttonList: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    message: {
+        // fontFamily: 'monospace',
     }
 })

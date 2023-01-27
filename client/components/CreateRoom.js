@@ -21,7 +21,7 @@ export default function CreateRoom({ navigation, socket, loginData }) {
 
     const handleSubmit = async () => {
         const token = await AsyncStorage.getItem('token')
-        let req = await fetch('http://172.29.1.114:5000/rooms', {
+        let req = await fetch('http://10.129.2.90:5000/rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,15 +42,17 @@ export default function CreateRoom({ navigation, socket, loginData }) {
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <View>
                     {showMessage ? (
-                        <View>
-                            <Text> Waiting for a user to join {text}...</Text>
+                        <View style={styles.container}>
+                            <Text style={styles.message}> Waiting for a user</Text>
+                            <Text style={styles.message}> to join {text}...</Text>
+
                         </View>
                     ) : (
                         <View style={styles.buttonContainer}>
                             <TextInput
                                 style={styles.textInput}
                                 placeholder="Room Name"
-                                placeholderTextColor="rgba(300, 300, 300, 0.3)"
+                                placeholderTextColor="#FFFFFF"
                                 maxLength={20}
                                 onChangeText={text => onChangeText(text)}
                                 value={text}
@@ -65,14 +67,15 @@ export default function CreateRoom({ navigation, socket, loginData }) {
                             </View>
                             <Button
                                 title="Create Room"
-                                titleStyle={{ fontWeight: '700' }}
+                                titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
                                 buttonStyle={{
-                                    backgroundColor: 'rgba(90, 154, 230, 1)',
+                                    backgroundColor: '#FFA500',
                                     borderColor: 'transparent',
                                     borderWidth: 0,
                                     borderRadius: 30,
                                 }}
                                 containerStyle={{
+                                    height: 50,
                                     width: 200,
                                     marginHorizontal: 50,
                                     marginVertical: 10,
@@ -119,15 +122,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     textInput: {
-        borderColor: '#CCCCCC',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderColor: '#369F8E',
+        borderTopWidth: 5,
+        borderBottomWidth: 5,
         height: 50,
         fontSize: 25,
         paddingLeft: 20,
         paddingRight: 20,
-        color: '#CCCCCC',
-        marginVertical: 20
+        color: '#000000',
+        marginVertical: 20,
+        textAlign: 'center'
     },
     checkboxContainer: {
         flexDirection: 'row',
@@ -138,5 +142,9 @@ const styles = StyleSheet.create({
     },
     label: {
         margin: 8,
+    },
+    message: {
+        // fontFamily: 'monospace',
+        marginVertical: 8
     }
 });

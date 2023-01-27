@@ -9,7 +9,7 @@ export default function ChoosePublic({ navigation, loginData, socket }) {
 
     useEffect(() => {
         const request = async () => {
-            let req = await fetch('http://172.29.1.114:5000/rooms')
+            let req = await fetch('http://10.129.2.90:5000/rooms')
             let res = await req.json()
             const publicRooms = res.filter(room => { return room.player_sid === null && room.private === false })
             setRooms(publicRooms)
@@ -21,7 +21,7 @@ export default function ChoosePublic({ navigation, loginData, socket }) {
 
 
     const handleRoom = async (id) => {
-        let req = await fetch(`http://172.29.1.114:5000/rooms/${id}`, {
+        let req = await fetch(`http://10.129.2.90:5000/rooms/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export default function ChoosePublic({ navigation, loginData, socket }) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
-                <Text style={styles.buttonLabel}>Enter a Public Room</Text>
+                {/* <Text style={styles.buttonLabel}>Enter a Public Room</Text> */}
                 {
                     rooms.map((room, i) => (
                         <TouchableOpacity key={`room-${i}`} onPress={() => { handleRoom(room.id) }} style={styles.appButtonContainer}>

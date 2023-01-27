@@ -74,7 +74,7 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
                         }}
                         titleStyle={{ fontWeight: '700' }}
                         buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
+                            backgroundColor: '#369F8E',
                             borderColor: 'transparent',
                             borderWidth: 0,
                             borderRadius: 30,
@@ -90,7 +90,7 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
                             onPress={() => takePicture()}
                             titleStyle={{ fontWeight: '700' }}
                             buttonStyle={{
-                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                backgroundColor: '#FFA500',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 30,
@@ -111,7 +111,7 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
                             onPress={() => setImage(null)}
                             titleStyle={{ fontWeight: '700' }}
                             buttonStyle={{
-                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                backgroundColor: '#369F8E',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 30,
@@ -126,7 +126,7 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
                             onPress={() => onSaveImageAsync()}
                             titleStyle={{ fontWeight: '700' }}
                             buttonStyle={{
-                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                backgroundColor: '#369F8E',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 30,
@@ -137,11 +137,11 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
                                 marginVertical: 10,
                             }} />
                         <Button
-                            title="Share"
+                            title="Swap"
                             onPress={() => shareImage()}
                             titleStyle={{ fontWeight: '700' }}
                             buttonStyle={{
-                                backgroundColor: 'rgba(90, 154, 230, 1)',
+                                backgroundColor: '#FFA500',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 30,
@@ -156,7 +156,7 @@ export default function CameraApp({ image, setImage, base64image, setBase64Image
             </View>
                 :
                 <View style={styles.container}>
-                    <Text>Waiting for other user</Text>
+                    <Text style={styles.message}>Waiting for other user</Text>
                 </View>}
         </View>
     );
@@ -186,6 +186,10 @@ const styles = StyleSheet.create({
     buttonList: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginVertical: 20
+    },
+    message: {
+        // fontFamily: 'monospace',
     }
 })

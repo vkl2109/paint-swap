@@ -10,7 +10,7 @@ export default function EnterPrivate({ navigation, socket, loginData }) {
 
     const handleSubmit = async () => {
 
-        let req = await fetch(`http://172.29.1.114:5000/rooms/${name}`, {
+        let req = await fetch(`http://10.129.2.90:5000/rooms/${name}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,21 +29,22 @@ export default function EnterPrivate({ navigation, socket, loginData }) {
                     <TextInput
                         style={styles.textInput}
                         placeholder="Room Name"
-                        placeholderTextColor="rgba(300, 300, 300, 0.3)"
+                        placeholderTextColor="#FFFFFF"
                         maxLength={20}
                         value={name}
                         onChangeText={onChangeName}
                     />
                     <Button
                         title="Enter Room"
-                        titleStyle={{ fontWeight: '700' }}
+                        titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
                         buttonStyle={{
-                            backgroundColor: 'rgba(90, 154, 230, 1)',
+                            backgroundColor: '#FFA500',
                             borderColor: 'transparent',
                             borderWidth: 0,
                             borderRadius: 30,
                         }}
                         containerStyle={{
+                            height: 50,
                             width: 200,
                             marginHorizontal: 50,
                             marginVertical: 10,
@@ -87,13 +88,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     textInput: {
-        borderColor: '#CCCCCC',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderColor: '#369F8E',
+        borderTopWidth: 5,
+        borderBottomWidth: 5,
         height: 50,
         fontSize: 25,
         paddingLeft: 20,
         paddingRight: 20,
-        marginVertical: 20
+        marginVertical: 20,
+        color: '#000000',
+        textAlign: 'center'
     }
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Pressable, Text, Image } from 'react-native';
 import { Button } from '@rneui/themed';
 
 const PicSwapLogo = require('../assets/pic-swap-logo.png');
@@ -8,14 +8,14 @@ export default function LandingPage({ navigation }) {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={styles.buttonList}>
-          <Image source={PicSwapLogo} style={styles.image} />
+          <Image source={PicSwapLogo} style={styles.logo} />
           <Button
             title="Create Room"
             buttonStyle={{
-              backgroundColor: 'rgba(111, 202, 186, 1)',
+              backgroundColor: '#369F8E',
               borderRadius: 5,
             }}
-            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
             containerStyle={{
               marginHorizontal: 50,
               height: 50,
@@ -25,12 +25,12 @@ export default function LandingPage({ navigation }) {
             onPress={() => navigation.navigate('CreateRoom')}
           />
           <Button
-            title="Enter A Room"
+            title="Enter Room"
             buttonStyle={{
-              backgroundColor: 'rgba(111, 202, 186, 1)',
+              backgroundColor: '#369F8E',
               borderRadius: 5,
             }}
-            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
             containerStyle={{
               marginHorizontal: 50,
               height: 50,
@@ -42,10 +42,10 @@ export default function LandingPage({ navigation }) {
           <Button
             title="Choose Public"
             buttonStyle={{
-              backgroundColor: 'rgba(111, 202, 186, 1)',
+              backgroundColor: '#369F8E',
               borderRadius: 5,
             }}
-            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
             containerStyle={{
               marginHorizontal: 50,
               height: 50,
@@ -67,6 +67,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  logo: {
+    width: 300,
+    height: 120,
+    marginBottom: 60
   },
   buttonList: {
     flex: 1,

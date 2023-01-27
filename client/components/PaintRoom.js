@@ -17,7 +17,7 @@ export default function PaintRoom({ navigation, route }) {
 
   const shareImage = () => {
     const request = async () => {
-      let req = await fetch('http://172.29.1.114:5000/postimage', {
+      let req = await fetch('http://10.129.2.90:5000/postimage', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -42,16 +42,16 @@ export default function PaintRoom({ navigation, route }) {
         {visible ?
           (<View style={styles.buttonList}>
             <Button
-              title="Take a Photo"
+              title="Take Photo"
               buttonStyle={{
-                backgroundColor: 'rgba(111, 202, 186, 1)',
+                backgroundColor: '#FFA500',
                 borderRadius: 5,
               }}
-              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
               containerStyle={{
                 marginHorizontal: 50,
                 height: 50,
-                width: 200,
+                width: 280,
                 marginVertical: 20,
               }}
               onPress={() => {
@@ -62,14 +62,14 @@ export default function PaintRoom({ navigation, route }) {
             <Button
               title="Choose from Album"
               buttonStyle={{
-                backgroundColor: 'rgba(111, 202, 186, 1)',
+                backgroundColor: '#369F8E',
                 borderRadius: 5,
               }}
-              titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
+              titleStyle={{ fontWeight: 'bold', fontSize: 20 }}
               containerStyle={{
                 marginHorizontal: 50,
                 height: 50,
-                width: 200,
+                width: 280,
                 marginVertical: 20,
               }}
               onPress={() => {

@@ -75,7 +75,7 @@ def postimage():
         db.session.commit()
     elif current_user.sid == room.host_sid:
         room.hostURI = data['uri']
-        print(data['uri'])
+        # print(data['uri'])
         room.hostBool = not room.hostBool
         db.session.commit()
     else:
@@ -102,7 +102,7 @@ def leaveroom():
         return {"message": "left room"}, 201
     elif current_user.sid == room.host_sid:
         socketio.emit('leave_room', {
-            'data': 'socket message sent to the other user'}, room=room.player.sid)
+            'data': 'socket message sent to the other user'}, room=room.player_sid)
         return {"message": "left room"}, 201
     else:
         return {'error': 'something went wrong'}, 404

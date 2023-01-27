@@ -21,7 +21,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
   const handleSubmit = () => {
     if (loginState) {
       const login = async () => {
-        let req = await fetch("http://172.29.1.114:5000/login", {
+        let req = await fetch("http://10.129.2.90:5000/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
@@ -36,7 +36,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
           setLoginData(newUser)
           await AsyncStorage.setItem('token', res.token)
           navigation.navigate('LandingPage')
-          const newSocket = io("http://172.29.1.114:5000", {
+          const newSocket = io("http://10.129.2.90:5000", {
             extraHeaders: {
               Authorization: `Bearer ${res.token}`
             }
@@ -69,7 +69,7 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
     }
     else {
       const signup = async () => {
-        let req = await fetch("http://172.29.1.114:5000/users", {
+        let req = await fetch("http://10.129.2.90:5000/users", {
           method: "POST",
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({
@@ -86,9 +86,9 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
         }
         else {
           setErrorMsg('')
-          // signup()
+          signup()
+          navigation.navigate('LandingPage')
         }
-        // navigation.navigate('LandingPage')
       }
     }
   }
@@ -107,56 +107,58 @@ export default function Login({ navigation, loginData, setLoginData, setSocket, 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.headerContainer}>
-          <Image source={PicSwapLogo} style={styles.image} />
-          <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
-          <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
-          {!loginState && <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
-          <Dialog
-            isVisible={errorDialog}
-            onBackdropPress={toggleErrorDialog}
-          >
-            <Dialog.Title style={styles.dialogTitle} title={loginState ? "Log In Error" : "Sign Up Error"} />
-            <Text style={styles.dialogText}>{errorMsg}</Text>
-          </Dialog>
-          <Button
-            title={loginState ? "LOG IN" : "SIGN UP"}
-            buttonStyle={{
-              backgroundColor: 'black',
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 30,
-            }}
-            containerStyle={{
-              width: 200,
-              marginHorizontal: 50,
-              marginVertical: 10,
-            }}
-            titleStyle={{ fontWeight: 'bold' }}
-            onPress={() => handleSubmit()}
-          />
-          <Button
-            title={loginState ? "go to sign up" : "go to log in"}
-            buttonStyle={{
-              backgroundColor: 'rgba(100, 100, 100, 50)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
-            containerStyle={{
-              width: 200,
-              height: 50,
-              marginHorizontal: 50,
-              marginVertical: 10,
-            }}
-            titleStyle={{ fontWeight: 'bold' }}
-            onPress={() => setLoginState(loginState => !loginState)}
-          />
+        <View style={styles.container}>
+          <Image source={PicSwapLogo} style={styles.logo} />
+          <View style={styles.headerContainer}>
+            <TextInput style={styles.input} onChangeText={onChangeUserName} value={username} placeholder='username'></TextInput>
+            <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangePassword} value={password} placeholder='password'></TextInput>
+            {!loginState && <TextInput secureTextEntry={true} style={styles.input} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder='confirm password'></TextInput>}
+            <Dialog
+              isVisible={errorDialog}
+              onBackdropPress={toggleErrorDialog}
+            >
+              <Dialog.Title style={styles.dialogTitle} title={loginState ? "Log In Error" : "Sign Up Error"} />
+              <Text style={styles.dialogText}>{errorMsg}</Text>
+            </Dialog>
+            <Button
+              title={loginState ? "LOG IN" : "SIGN UP"}
+              buttonStyle={{
+                backgroundColor: '#369F8E',
+                borderWidth: 0,
+                borderColor: 'white',
+                borderRadius: 30,
+              }}
+              containerStyle={{
+                width: 200,
+                marginHorizontal: 50,
+                marginVertical: 10,
+              }}
+              titleStyle={{ fontWeight: 'bold' }}
+              onPress={() => handleSubmit()}
+            />
+            <Button
+              title={loginState ? "SIGN UP" : "LOG IN"}
+              buttonStyle={{
+                backgroundColor: '#FFA500',
+                borderColor: 'transparent',
+                borderWidth: 0,
+                borderRadius: 30,
+              }}
+              containerStyle={{
+                width: 200,
+                height: 50,
+                marginHorizontal: 50,
+                marginVertical: 10,
+              }}
+              titleStyle={{ fontWeight: 'bold' }}
+              onPress={() => setLoginState(loginState => !loginState)}
+            />
+          </View>
+          <View style={styles.imageContainer}>
+            <Image source={PlaceholderImage} style={styles.image} />
+          </View>
+          <StatusBar style="auto" />
         </View>
-        <View style={styles.imageContainer}>
-          <Image source={PlaceholderImage} style={styles.image} />
-        </View>
-        <StatusBar style="auto" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -168,6 +170,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5EA9D', // '#25292e'
     alignItems: 'center',
+    justifyContent: 'center'
+  },
+  logo: {
+    width: 300,
+    height: 120,
+    marginTop: 60
   },
   image: {
     width: 320,
@@ -196,7 +204,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 200,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 0,
     padding: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
