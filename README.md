@@ -1,1 +1,1 @@
-# paint-swap
+# pic-swap
